@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CS360/560 Homework3</title>
+
+        <!-- Required CSS files -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/barfiller.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://www.jq22.com/jquery/font-awesome.4.7.0.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <style media="screen">
+
+    svg{
+      border: 1px solid #ccc;
+    }
+
+    #tooltip {
+        font-weight: 600;
+        text-shadow: 0px 0px 2px white;
+
+        fill: black;
+        stroke: none;
+    }
+
+    path.land {
+        fill: #dddddd;
+        stroke: none;
+    }
+
+    path.neighborhood {
+        fill: none;
+        stroke: white;
+        stroke-width: 3.5px;
+        pointer-events: none;
+    }
+
+    path.street {
+        fill: none;
+        stroke: white;
+        stroke-width: 1px;
+        pointer-events: none;
+    }
+
+    .active {
+        stroke: red !important;
+        stroke-width: 1.5px !important;
+    }
+
+    circle.symbol {
+        fill-opacity: 0.6;
+
+        stroke: white;
+        stroke-width: 1px;
+    }
+
+    a:link, a:visited {
+        color: #444444;
+    }
+
+    a:hover, a:active {
+        color: red;
+    }
+
+    th {
+        text-align: right;
+     }
+    </style>
+</head>
+
+<body>
+    <div class="preloader">
+        <span class="preloader-spin"></span>
+    </div>
+    <div class="site">
+		<header id="header">
+			<div class="container">
+				<div class="row">
+					<div class="col-6 col-sm-3 logo-column">
+						<h3><a href="index.html" class="logo">Final Project</a></h3>
+					</div>
+					<div class="col-6 col-sm-9 nav-column clearfix">
+						<nav id="menu" class="d-none d-lg-block">
+							<ul>
+								<li><a href="index.html">Home</a></li>
+								<li class="current-menu-item"><a href="dataset.html">DataSet</a></li>
+                <li><a href="phototype.html">Phototype</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</header>
+		<main id="main">
+			<div class="page-title sp" style="background-image: url(assets/img/home-banner.jpg);background-size: cover">
+				<div class="container text-center">
+					<!-- <h2>About D3 Implementation</h2> -->
+					<!-- <p>For this project, we will collect data from Fire Departmemt.</p> -->
+				</div>
+			</div>
+			<div class="about-area sp">
+				<div class="container content-main">
+					<h4>Map Implementation</h4>
+          <p>Visualize the <a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">“ SF 311 dataset”. </a>
+          Filtering the dataset to show cases that were OPENED in the month of February 2020 only and its Category is <strong>Residential Building Request</strong>. </p>
+          <p>In basemap,I use <strong>current police districts</strong> as a map projection and shows the Boundaries of difference districts.</p>
+          <p>I choose <strong>choropleth map</strong> to visualize the dateset. I rollup the "residential building request" cases by districts
+          and visualize a numerical value using fill colr for that region.</p>
+          <hr>
+          <h4>Visualization Writeup</h4>
+          <ul>
+            <li><strong>Encoding: </strong>The number of cases in different districts is encoded by the depth of filled color, so greener color represents higher number of cases.</li>
+            <li><strong>Interactivity: </strong>
+            <ul>
+                <li><strong>Hovering And Tooltips: </strong>show details when the mouse hovers over a region and/or symbol.</li>
+                <li><strong>Zooming And Panning:: </strong>Allow users to zoom in on a region (either mouse scroll or click) and pan (drag) the view while zoomed in.</li>
+            </ul>
+          </li>
+            <li><strong>Wrangling: </strong>Filtering the dataset to show cases that were OPENED in the month of February 2020 only and its Category is Residential Building Request</li>
+            <li><strong>Conclusion: </strong>The map shows the northern district and central district have more number of 311 cases which is residental building request. But I think
+            using or calculate a per sq ft or per ratio will be more accurately.</li>
+          </ul>
+
+          <br>
+          <figure>
+          <svg width="960" height="600" id="vis">
+            <g id="basemap"></g>
+
+            <!-- turn off pointer events for certain groups -->
+            <g id="streets" pointer-events="none"></g>
+            <g id="outline" pointer-events="none"></g>
+
+            <g id="arrests"></g>
+            <g id="tooltip" pointer-events="none"></g>
+            <g id="details" pointer-events="none"></g>
+         </svg>
+
+         <figcaption>
+           Source: <a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">311 Department cases Reports: February 2020</a> (<a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">Police District</a>)
+         </figcaption>
+        </figure>
+
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script>
+
+          const start = d3.timeDay(new Date(2020,01,01));
+          const end = d3.timeDay(new Date(2020,01,29));
+
+          const format = d3.timeFormat("%Y-%m-%dT%H:%M:%S");
+          console.log(format(start), format(end));
+
+          const urls = {
+            basemap: "https://data.sfgov.org/resource/q52f-skbd.geojson",
+            streets: "https://data.sfgov.org/resource/3psu-pn9h.geojson?$limit=20000",
+            arrests: "https://data.sfgov.org/resource/vw6y-z8j6.json"
+
+
+          };
+
+          // add parameters to arrests url
+
+          urls.arrests += "?$where=service_name='Residential Building Request'";
+          urls.arrests += " AND requested_datetime between '" + format(start) + "'";
+          urls.arrests += " and '" + format(end) + "'";
+
+          // output url before encoding
+          console.log(urls.arrests);
+          //
+          // // encode special characters
+          // // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
+          urls.arrests = encodeURI(urls.arrests);
+          console.log("url:"+urls.arrests);
+          const svg = d3.select("body").select("svg#vis");
+
+          const g = {
+            basemap: svg.select("g#basemap"),
+            streets: svg.select("g#streets"),
+            outline: svg.select("g#outline"),
+            arrests: svg.select("g#arrests"),
+            tooltip: svg.select("g#tooltip"),
+            details: svg.select("g#details")
+          };
+
+          // setup tooltip (shows neighborhood name)
+          const tip = g.tooltip.append("text").attr("id", "tooltip");
+          tip.attr("text-anchor", "end");
+          tip.attr("dx", -5);
+          tip.attr("dy", -5);
+          tip.style("visibility", "hidden");
+
+          // add details widget
+          // https://bl.ocks.org/mbostock/1424037
+          const details = g.details.append("foreignObject")
+            .attr("id", "details")
+            .attr("width", 960)
+            .attr("height", 600)
+            .attr("x", 0)
+            .attr("y", 0);
+
+          const body = details.append("xhtml:body")
+            .style("text-align", "left")
+            .style("background", "none")
+            .html("<p>N/A</p>");
+
+          details.style("visibility", "hidden");
+
+          // setup projection
+          // https://github.com/d3/d3-geo#geoConicEqualArea
+          const projection = d3.geoConicEqualArea();
+          projection.parallels([37.692514, 37.840699]);
+          projection.rotate([122, 0]);
+
+          // setup path generator (note it is a GEO path, not a normal path)
+          const path = d3.geoPath().projection(projection);
+
+
+
+
+          let map = new Map();
+          d3.json(urls.arrests).then(drawColor);
+
+          d3.json(urls.basemap).then(function(json) {
+            // makes sure to adjust projection to fit all of our regions
+            projection.fitSize([960, 600], json);
+            // draw the land and neighborhood outlines
+            drawBasemap(json);
+            // now that projection has been set trigger loading the other files
+            // note that the actual order these files are loaded may differ
+            d3.json(urls.streets).then(drawStreets);
+            d3.json(urls.arrests).then(drawArrests);
+          });
+
+          var zoom = d3.zoom()
+                        .scaleExtent([1, 8])
+                        .on('zoom', function() {
+                            svg.selectAll('path')
+                             .attr('transform', d3.event.transform);
+                            svg.selectAll("circle")
+                             .attr('transform', d3.event.transform);
+                  });
+
+          svg.call(zoom);
+
+          function drawColor(json){
+            console.log(count);
+            console.log(count.length);
+            for (var i =0; i<count.length; i++) {
+              if(count[i].police_district == null){
+                continue;
+              }
+              if(count[i].police_district!= null & !map.has(count[i].police_district)){
+                  map.set(count[i].police_district,1);
+              }else{
+                 map.set(count[i].police_district,map.get(count[i].police_district)+1);
+              }
+            }
+
+            console.log("Map",map);
+          }
+
+
+          function drawBasemap(json) {
+            console.log("basemap", json);
+
+            const basemap = g.basemap.selectAll("path.land")
+              .data(json.features)
+              .enter()
+              .append("path")
+              .attr("d", path)
+              .attr("class", "land");
+
+            const outline = g.outline.selectAll("path.neighborhood")
+                .data(json.features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .attr("class", "neighborhood")
+                .each(function(d) {
+                  // save selection in data for interactivity
+                  // saves search time finding the right outline later
+                  d.properties.outline = this;
+                });
+
+
+            const color = d3.scaleQuantile()
+                          .domain([0,21])
+                          .range(["rgb(237, 248, 233)", "rgb(186, 228, 179)", "rgb(116,196,118)", "rgb(49,163,84)", "rgb(0,109,44)"])
+
+            outline.style("fill",function(d){
+              // console.log(d.properties.district);
+              // console.log(map);
+              console.log(map.get(d.properties.district));
+                return color(map.get(d.properties.district))
+            });
+
+
+
+            const legend = svg.append("g")
+                              .attr("class","legend")
+                              .attr("transform","translate(800,40)");
+
+            legend.append("rect")
+                  .attr("height", 20)
+                  .attr("width", 30)
+                  .attr("fill",color.invertExtent[2])
+                  .attr("transform","translate(770,80)");
+
+
+            legend.selectAll("rect")
+                  .data(color.range().map(function(d) {
+                  d = color.invertExtent(d);
+                  console.log(d);
+                  return d;
+                }))
+              .enter().append("rect")
+                .attr("height", 20)
+                .attr("width", 30)
+                .attr("transform",function(d,i){return translate(30*i,10)})
+
+                // .attr("x",function(i,d){return i+30})
+                // .attr("y",function(i,d){return i+20})
+                .attr("fill", function(d) { return color(d[0]); });
+
+                legend.append("text")
+                  .attr("class", "caption")
+                  .attr("fill", "#000")
+                  .attr("text-anchor", "start")
+                  .attr("font-weight", "bold")
+                  .text("Total # Of 311 Cases")
+                  .attr("transform",translate(20,0));
+
+
+                legend.append("text")
+                      .attr("class", "caption")
+                      .attr("fill", "#000")
+                      .attr("text-anchor", "start")
+                      .attr('with-space-preserve', true)
+                      .attr('xml:space', 'preserve')
+                      .text("0      4      8     12     16   ")
+                      .attr("transform",translate(20,50))
+
+
+
+            // add highlight
+            basemap.on("mouseover.highlight", function(d) {
+              d3.select(d.properties.outline).raise();
+              d3.select(d.properties.outline).classed("active", true);
+            })
+            .on("mouseout.highlight", function(d) {
+              d3.select(d.properties.outline).classed("active", false);
+            });
+
+            // add tooltip
+            basemap.on("mouseover.tooltip", function(d) {
+              tip.text(d.properties.district);
+              tip.style("visibility", "visible");
+            })
+            .on("mousemove.tooltip", function(d) {
+              const coords = d3.mouse(g.basemap.node());
+              tip.attr("x", coords[0]);
+              tip.attr("y", coords[1]);
+            })
+            .on("mouseout.tooltip", function(d) {
+              tip.style("visibility", "hidden");
+            });
+          }
+
+
+          function drawColor(json){
+            console.log("arrests", json);
+            console.log("length"+json.length);
+
+            for (var i =0; i<json.length; i++) {
+              if(json[i].police_district == null){
+                continue;
+              }
+              if(json[i].police_district!= null & !map.has(json[i].police_district)){
+                  map.set(json[i].police_district,1);
+              }else{
+                map.set(json[i].police_district,map.get(json[i].police_district)+1);
+              }
+            }
+
+            console.log(map);
+
+
+          }
+
+          function drawStreets(json) {
+            console.log("streets", json);
+
+            // only show active streets
+            const streets = json.features.filter(function(d) {
+              return d.properties.active;
+            });
+
+            console.log("removed", json.features.length - streets.length, "inactive streets");
+
+            g.streets.selectAll("path.street")
+              .data(streets)
+              .enter()
+              .append("path")
+              .attr("d", path)
+              .attr("class", "street");
+          }
+
+          function drawArrests(json) {
+            console.log("arrests", json);
+            console.log(json.length);
+
+            // loop through and add projected (x, y) coordinates
+            // (just makes our d3 code a bit more simple later)
+            json.forEach(function(d) {
+              const latitude = parseFloat(d.lat);
+              const longitude = parseFloat(d.long);
+              const pixels = projection([longitude, latitude]);
+
+              d.x = pixels[0];
+              d.y = pixels[1];
+            });
+
+            const symbols = g.arrests.selectAll("circle")
+              .data(json)
+              .enter()
+              .append("circle")
+              .attr("cx", d => d.x)
+              .attr("cy", d => d.y)
+              .attr("r", 5)
+              .attr("class", "symbol");
+
+            symbols.on("mouseover", function(d) {
+              d3.select(this).raise();
+              d3.select(this).classed("active", true);
+
+              // use template literal for the detail table
+              // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+              const html = `
+                <table border="1" cellspacing="0" cellpadding="2">
+                <tbody>
+                  <tr>
+                    <th>Incident:</th>
+                    <td>${d.service_request_id}</td>
+                  </tr>
+                  <tr>
+                    <th>Date:</th>
+                    <td>${new Date(d.requested_datetime).toDateString()}</td>
+                  </tr>
+                  <tr>
+                    <th> Updated Time:</th>
+                    <td>${d.updated_datetime}</td>
+                  </tr>
+                  <tr>
+                    <th>Police_district:</th>
+                    <td>${d.police_district}</td>
+                  </tr>
+                  <tr>
+                    <th>Category:</th>
+                    <td>${d.service_name}</td>
+                  </tr>
+                </tbody>
+                </table>
+              `;
+
+              body.html(html);
+              details.style("visibility", "visible");
+            });
+
+            symbols.on("mouseout", function(d) {
+              d3.select(this).classed("active", false);
+              details.style("visibility", "hidden");
+            });
+          }
+
+          function translate(x, y) {
+            return "translate(" + String(x) + "," + String(y) + ")";
+          }
+
+
+
+      </script>
+				</div>
+			</div>
+		</main>
+		<footer>
+			<div class="footer-bottom">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="copyright-txt">
+								Copyright &copy; 2020. All rights reserved.
+							</div>
+						</div>
+						<div class="col-lg-6 text-right">
+							<div class="footer-nav">
+								<a href="index.html">Home</a>
+								<a href="dataset.html">Dataset</a>
+								<a href="data.html">Data</a>
+								<a href="team.html">Team</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+    </div>
+
+    <!--Required JS files-->
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="assets/js/vendor/popper.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/vendor/owl.carousel.min.js"></script>
+<script src="assets/js/vendor/isotope.pkgd.min.js"></script>
+<script src="assets/js/vendor/jquery.barfiller.js"></script>
+<script src="assets/js/vendor/loopcounter.js"></script>
+<script src="assets/js/vendor/slicknav.min.js"></script>
+<script src="assets/js/active.js"></script>
+
+</body>
+
+</html>
