@@ -64,9 +64,14 @@
 				<div class="container content-main">
 					<h4>Phototype</h4>
           <p>Visualize the <a href="https://www.fec.gov/?state=&election_full=true">“ Presidental Election” </a></p>
-          <p>I built a geocoded electoral map in Tableau, using red for Republican states and blue for Democratic states.
-            I included a tooltip that shows information on the winning candidate, the margin of victory, and the number of electoral votes. I also made a list of the swing states where the margin of victory was less than 5%.
-            I created a time-series line graph to display how the voting patterns in each state have evolved over several elections
+          <h5>Is there a visible voting patterns of US Presidential Election from 1984 to 2016?</h5>
+          <p>We can also draw conclusions from the Presidential map:
+            the same few swing states usually decide the election, the country is getting more polarized,
+            and there is evidence of a partisan realignment. New England states used to be reliably Republican,
+            but since 1992 they have been reliably Democratic. In the 1990s a Southern Democrat like Bill Clinton was able to win Southern states,
+             but they are now uniformly Republican, and have gotten more and more Republican leaning over time.
+              The country has become more polarized politically, and there are fewer states where the margin of victory is small.
+              This means that fewer states swing between parties from one election to the next, and the states that do swing have disproportionate impact on the election.
             </p>
             <br>
 			     <img src="image/result-map.png" alt="" >
@@ -81,6 +86,21 @@
              I was able to show the difference and contrast the colors more easily.
            </p>
            <img src="image/state.png" alt="" >
+           <br>
+           <h5>Encoding</h5>
+           <p>
+             I built a geocoded electoral choropleth map in Tableau, using red for Republican states and blue for Democratic states. The depth of color also
+             represents the margin of victory, the darker color means greater margin of victory.
+           </p>
+           <br>
+
+           <h5>Interactivity</h5>
+           <p>
+             I included a tooltip that shows information on the winning candidate, the margin of victory, and the number of electoral votes. I also made a list of the swing states where the margin of victory was less than 5%.
+             I created a time-series bar graph to display how the voting patterns in each state have evolved over several elections.
+           </p>
+           <video src="elections.mov" autoplay loop poster="posterimage.jpg" width="960" height="500" >
+
 				</div>
 			</div>
 		</main>
