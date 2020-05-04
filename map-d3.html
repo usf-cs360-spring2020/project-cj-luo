@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>CS360/560 Homework3</title>
+    <title>CS360/560 Final Project</title>
 
         <!-- Required CSS files -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
@@ -17,64 +17,10 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/slicknav.css">
     <link rel="stylesheet" href="assets/css/main.css">
-
-    <style media="screen">
-
-    svg{
-      border: 1px solid #ccc;
-    }
-
-    #tooltip {
-        font-weight: 600;
-        text-shadow: 0px 0px 2px white;
-
-        fill: black;
-        stroke: none;
-    }
-
-    path.land {
-        fill: #dddddd;
-        stroke: none;
-    }
-
-    path.neighborhood {
-        fill: none;
-        stroke: white;
-        stroke-width: 3.5px;
-        pointer-events: none;
-    }
-
-    path.street {
-        fill: none;
-        stroke: white;
-        stroke-width: 1px;
-        pointer-events: none;
-    }
-
-    .active {
-        stroke: red !important;
-        stroke-width: 1.5px !important;
-    }
-
-    circle.symbol {
-        fill-opacity: 0.6;
-
-        stroke: white;
-        stroke-width: 1px;
-    }
-
-    a:link, a:visited {
-        color: #444444;
-    }
-
-    a:hover, a:active {
-        color: red;
-    }
-
-    th {
-        text-align: right;
-     }
-    </style>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+    <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+    <link rel="stylesheet" href="d3-style.css">
 </head>
 
 <body>
@@ -131,18 +77,43 @@
           </ul>
 
           <br>
+
           <figure>
-          <svg width="960" height="600" id="vis">
-            <g id="basemap"></g>
+            <h1>US Electional Map Sized by Electional Votes</h1>
+            <div id="body">
+              <div class="main-container">
+                <div id="#date-slider-container" data-role="fieldcontain">
+                  <span id="date-slider-value-label" class="label">Year: </span><span id="date-slider-value"></span>
+                  <span id="date-slider-min-label"></span>
+                  <input type="range" name="date-slider" id="date-slider" value="25" min="0" max="100" style="display:none;"/>
+                  <span id="date-slider-max-label"></span>
+                  </div>
+              </div>
 
-            <!-- turn off pointer events for certain groups -->
-            <g id="streets" pointer-events="none"></g>
-            <g id="outline" pointer-events="none"></g>
+                <div class="side-container">
+                <div class="bar-chart-header">
+                  	<span id="bar-chart-state-label">State: NewYork</span>
+                </div>
 
-            <g id="arrests"></g>
-            <g id="tooltip" pointer-events="none"></g>
-            <g id="details" pointer-events="none"></g>
-         </svg>
+                </div>
+              <div id="main-container">
+				            <!-- <div id="cartogram"> </div> -->
+                      <svg width="650" height="500" id="vis"></svg>
+			        </div>
+              <!-- bar chart -->
+              <div id="side-container">
+                <div id="vote-chart">
+                    <svg width="380" height="300" id="vis_bar"></svg>
+                </div>
+                <div id="side-details">
+
+                </div>
+              </div>
+            </div>
+            <br>
+          <!-- <svg width="960" height="600" id="vis">
+            <g id = "basemap"></g>
+          </svg> -->
 
          <figcaption>
            Source: <a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">311 Department cases Reports: February 2020</a> (<a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">Police District</a>)
@@ -150,343 +121,260 @@
         </figure>
 
         <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script>
-
-          const start = d3.timeDay(new Date(2020,01,01));
-          const end = d3.timeDay(new Date(2020,01,29));
-
-          const format = d3.timeFormat("%Y-%m-%dT%H:%M:%S");
-          console.log(format(start), format(end));
-
-          const urls = {
-            basemap: "https://data.sfgov.org/resource/q52f-skbd.geojson",
-            streets: "https://data.sfgov.org/resource/3psu-pn9h.geojson?$limit=20000",
-            arrests: "https://data.sfgov.org/resource/vw6y-z8j6.json"
+        <script src="https://d3js.org/topojson.v2.min.js"></script>
+        <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 
 
-          };
+        <script type="text/javascript">
+          //add details widget
+          const details = d3.select("body").select("#side-details")
+                            .append("foreignObject")
+                            .attr("id", "details")
+                            .attr("width", 300)
+                            .attr("height", 200)
+                            .attr("x", 800)
+                            .attr("y", 800);
 
-          // add parameters to arrests url
+          const body_detail = details.append("xhtml:body")
+                                      .style("text-align", "center")
+                                      .style("background", "none")
+                                      .html("<p>N/A</p>");
 
-          urls.arrests += "?$where=service_name='Residential Building Request'";
-          urls.arrests += " AND requested_datetime between '" + format(start) + "'";
-          urls.arrests += " and '" + format(end) + "'";
+          details.style("visibility", "hidden");
 
-          // output url before encoding
-          console.log(urls.arrests);
-          //
-          // // encode special characters
-          // // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
-          urls.arrests = encodeURI(urls.arrests);
-          console.log("url:"+urls.arrests);
-          const svg = d3.select("body").select("svg#vis");
 
+
+
+
+          // draw basemap
+          const svg_vis = d3.select("body").select("svg#vis");
           const g = {
-            basemap: svg.select("g#basemap"),
-            streets: svg.select("g#streets"),
-            outline: svg.select("g#outline"),
-            arrests: svg.select("g#arrests"),
-            tooltip: svg.select("g#tooltip"),
-            details: svg.select("g#details")
+            basemap: svg_vis.select("g#basemap")
           };
 
-          // setup tooltip (shows neighborhood name)
-          const tip = g.tooltip.append("text").attr("id", "tooltip");
+          // tooltip
+          const tip = svg_vis.append("text").attr("id", "tooltip");
           tip.attr("text-anchor", "end");
           tip.attr("dx", -5);
           tip.attr("dy", -5);
           tip.style("visibility", "hidden");
 
-          // add details widget
-          // https://bl.ocks.org/mbostock/1424037
-          const details = g.details.append("foreignObject")
-            .attr("id", "details")
-            .attr("width", 960)
-            .attr("height", 600)
-            .attr("x", 0)
-            .attr("y", 0);
+          let projection = d3.geoAlbersUsa()
+                              .scale(800)
+                              .translate([650/2,500/2]);
 
-          const body = details.append("xhtml:body")
-            .style("text-align", "left")
-            .style("background", "none")
-            .html("<p>N/A</p>");
+          let path = d3.geoPath().projection(projection);
+          d3.json("dataset/us_states.json").then(function(us){
+            // console.log(us);
+          svg_vis.selectAll('.states')
+              	.data(topojson.feature(us, us.objects.usStates).features)
+              	.enter()
+              	.append('path')
+              	.attr('class', 'states')
+              	.attr('d', path)
+              	.on('mouseover', function(d,i){
+                  d3.select(this).raise().style('fill-opacity', 0.5);
+                  d3.select(this).raise();
+                  const html = `
+                        <p>States Name:${d.properties.STATE_ABBR}</p>
+                        <table border="0" cellspacing="0" cellpadding="2">
+                        <tbody>
+                          <tr>
+                            <th>Incident:</th>
+                            <td>${d.properties.STATE_ABBR}</td>
+                          </tr>
 
-          details.style("visibility", "hidden");
+                        </tbody>
+                        </table>
+                      `;
 
-          // setup projection
-          // https://github.com/d3/d3-geo#geoConicEqualArea
-          const projection = d3.geoConicEqualArea();
-          projection.parallels([37.692514, 37.840699]);
-          projection.rotate([122, 0]);
+                      body_detail.html(html);
+                      details.style("visibility", "visible");
+		              })
+                .on('mouseout', function(d, i) {
+                    d3.selectAll('.states').raise()
+                            .style('fill-opacity',1);
+                })
+              ;
 
-          // setup path generator (note it is a GEO path, not a normal path)
-          const path = d3.geoPath().projection(projection);
-
-
-
-
-          let map = new Map();
-          d3.json(urls.arrests).then(drawColor);
-
-          d3.json(urls.basemap).then(function(json) {
-            // makes sure to adjust projection to fit all of our regions
-            projection.fitSize([960, 600], json);
-            // draw the land and neighborhood outlines
-            drawBasemap(json);
-            // now that projection has been set trigger loading the other files
-            // note that the actual order these files are loaded may differ
-            d3.json(urls.streets).then(drawStreets);
-            d3.json(urls.arrests).then(drawArrests);
-          });
-
-          var zoom = d3.zoom()
-                        .scaleExtent([1, 8])
-                        .on('zoom', function() {
-                            svg.selectAll('path')
-                             .attr('transform', d3.event.transform);
-                            svg.selectAll("circle")
-                             .attr('transform', d3.event.transform);
-                  });
-
-          svg.call(zoom);
-
-          function drawColor(json){
-            console.log(count);
-            console.log(count.length);
-            for (var i =0; i<count.length; i++) {
-              if(count[i].police_district == null){
-                continue;
-              }
-              if(count[i].police_district!= null & !map.has(count[i].police_district)){
-                  map.set(count[i].police_district,1);
-              }else{
-                 map.set(count[i].police_district,map.get(count[i].police_district)+1);
-              }
-            }
-
-            console.log("Map",map);
-          }
+            // deal with data
+            let time_format = d3.timeFormat("%Y");
+            let time_parse = d3.timeParse("%d-%m-%Y");
 
 
-          function drawBasemap(json) {
-            console.log("basemap", json);
+            let margins_arr =[];
+            let map = new Map();
+            let state_bar_arr = new Map();
+            let x_domian_arr = [];
+            let y_domian_arr = [];
 
-            const basemap = g.basemap.selectAll("path.land")
-              .data(json.features)
-              .enter()
-              .append("path")
-              .attr("d", path)
-              .attr("class", "land");
 
-            const outline = g.outline.selectAll("path.neighborhood")
-                .data(json.features)
-                .enter()
-                .append("path")
-                .attr("d", path)
-                .attr("class", "neighborhood")
-                .each(function(d) {
-                  // save selection in data for interactivity
-                  // saves search time finding the right outline later
-                  d.properties.outline = this;
+            d3.csv("dataset/us_elections.csv").then(clearData);
+
+            function clearData(data){
+              let filter_by_states = data.filter(function(d,i){
+                return d.Abbrev == "FL";
+              })
+
+
+              filter_by_states.forEach((item, i) => {
+                    x_domian_arr[i]= time_format(time_parse(item.Year));
+                    y_domian_arr[i]= parseFloat(item.MarginofVictory);
+                    state_bar_arr.set(time_format(time_parse(item.Year)),parseFloat(item.MarginofVictory));
+                });
+              // console.log(x_domian_arr.sort());
+              // console.log(state_bar_arr);
+
+            // filter by year
+              data = data.filter(function(d,i){
+                return time_format(time_parse(d.Year)) == 2004;
+              })
+
+              // console.log(data.length);
+              data.forEach((item, i) => {
+                    margins_arr[i]=parseFloat(item.MarginofVictory);
+                    item.ElectoralVotes =parseInt(item.ElectoralVotes);
+                    map.set(item.Abbrev,i);
                 });
 
 
-            const color = d3.scaleQuantile()
-                          .domain([0,21])
-                          .range(["rgb(237, 248, 233)", "rgb(186, 228, 179)", "rgb(116,196,118)", "rgb(49,163,84)", "rgb(0,109,44)"])
 
-            outline.style("fill",function(d){
-              // console.log(d.properties.district);
-              // console.log(map);
-              console.log(map.get(d.properties.district));
-                return color(map.get(d.properties.district))
-            });
+              //color
+              const color= d3.scaleQuantile()
+                             .domain([-50,50])
+                             .range(["brown","steelblue"]);
 
 
+              const states_outline = svg_vis.selectAll(".states")
+                                            .style("fill",function(d){
+                                              var id = map.get(d.properties.STATE_ABBR)
+                                                 return color(parseFloat(margins_arr[id]))
+                                              });
 
-            const legend = svg.append("g")
-                              .attr("class","legend")
-                              .attr("transform","translate(800,40)");
+              svg_vis.selectAll(".states")
+                      .on("mourseover",function(d){
+                        d3.select(this).raise();
+                        const html = `
+                              <table border="0" cellspacing="0" cellpadding="2">
+                              <tbody>
+                                <tr>
+                                  <th>Incident:</th>
+                                  <td>${d.properties.STATE_ABBR}</td>
+                                </tr>
 
-            legend.append("rect")
-                  .attr("height", 20)
-                  .attr("width", 30)
-                  .attr("fill",color.invertExtent[2])
-                  .attr("transform","translate(770,80)");
+                              </tbody>
+                              </table>
+                            `;
 
-
-            legend.selectAll("rect")
-                  .data(color.range().map(function(d) {
-                  d = color.invertExtent(d);
-                  console.log(d);
-                  return d;
-                }))
-              .enter().append("rect")
-                .attr("height", 20)
-                .attr("width", 30)
-                .attr("transform",function(d,i){return translate(30*i,10)})
-
-                // .attr("x",function(i,d){return i+30})
-                // .attr("y",function(i,d){return i+20})
-                .attr("fill", function(d) { return color(d[0]); });
-
-                legend.append("text")
-                  .attr("class", "caption")
-                  .attr("fill", "#000")
-                  .attr("text-anchor", "start")
-                  .attr("font-weight", "bold")
-                  .text("Total # Of 311 Cases")
-                  .attr("transform",translate(20,0));
+                            body_details.html(html);
+                            details.style("visibility", "visible");
+                          });
 
 
-                legend.append("text")
-                      .attr("class", "caption")
-                      .attr("fill", "#000")
-                      .attr("text-anchor", "start")
-                      .attr('with-space-preserve', true)
-                      .attr('xml:space', 'preserve')
-                      .text("0      4      8     12     16   ")
-                      .attr("transform",translate(20,50))
+                //
+                // svg_vis.selectAll(".states").on("mouseout", function(d) {
+                //         d3.select(this).classed("active", false);
+                //         details.style("visibility", "hidden");
+                //         });
 
 
 
-            // add highlight
-            basemap.on("mouseover.highlight", function(d) {
-              d3.select(d.properties.outline).raise();
-              d3.select(d.properties.outline).classed("active", true);
-            })
-            .on("mouseout.highlight", function(d) {
-              d3.select(d.properties.outline).classed("active", false);
-            });
 
-            // add tooltip
-            basemap.on("mouseover.tooltip", function(d) {
-              tip.text(d.properties.district);
-              tip.style("visibility", "visible");
-            })
-            .on("mousemove.tooltip", function(d) {
-              const coords = d3.mouse(g.basemap.node());
-              tip.attr("x", coords[0]);
-              tip.attr("y", coords[1]);
-            })
-            .on("mouseout.tooltip", function(d) {
-              tip.style("visibility", "hidden");
-            });
-          }
-
-
-          function drawColor(json){
-            console.log("arrests", json);
-            console.log("length"+json.length);
-
-            for (var i =0; i<json.length; i++) {
-              if(json[i].police_district == null){
-                continue;
+              // draw bar chart
+              let margin = {
+                top:20,
+                right: 20,
+                left:40,
+                bottom:30
               }
-              if(json[i].police_district!= null & !map.has(json[i].police_district)){
-                  map.set(json[i].police_district,1);
-              }else{
-                map.set(json[i].police_district,map.get(json[i].police_district)+1);
-              }
-            }
 
-            console.log(map);
+              let bar_svg = d3.select("body").selectAll("svg#vis_bar");
+
+              bar_svg.width = 380;
+              bar_svg.height = 300;
+
+              let plot_width = bar_svg.width - margin.right - margin.left;
+              let plot_height = bar_svg.height- margin.top - margin.bottom;
+
+              // console.log("height:",plot_height);
 
 
-          }
+              // we need our data as an array of key, value pairs before binding
+              console.log( state_bar_arr);
+              let pairs = Array.from(state_bar_arr);
 
-          function drawStreets(json) {
-            console.log("streets", json);
+              pairs.sort(function(a,b){
+                return a[0]-b[0];
+              })
 
-            // only show active streets
-            const streets = json.features.filter(function(d) {
-              return d.properties.active;
-            });
+              console.log("y_domain",d3.min(y_domian_arr));
+              let x = d3.scaleBand()
+                                .domain(x_domian_arr.sort())
+                                .rangeRound([0,plot_width])
+                                .paddingInner(0.1);
 
-            console.log("removed", json.features.length - streets.length, "inactive streets");
+               let y = d3.scaleLinear()
+                                   .domain([d3.min(y_domian_arr),d3.max(y_domian_arr)])
+                                   .range([plot_height,0])
+                                   .nice();
+              //
+              // console.log("ydomain",state_bar_arr.values());
+               let plot_bar = bar_svg.append("g").attr("id","plot_bar");
 
-            g.streets.selectAll("path.street")
-              .data(streets)
-              .enter()
-              .append("path")
-              .attr("d", path)
-              .attr("class", "street");
-          }
+               plot_bar.attr("transform","translate("+margin.left+","+ margin.top+")");
 
-          function drawArrests(json) {
-            console.log("arrests", json);
-            console.log(json.length);
+               let xAxis = d3.axisBottom(x);
+               let yAxis = d3.axisLeft(y);
 
-            // loop through and add projected (x, y) coordinates
-            // (just makes our d3 code a bit more simple later)
-            json.forEach(function(d) {
-              const latitude = parseFloat(d.lat);
-              const longitude = parseFloat(d.long);
-              const pixels = projection([longitude, latitude]);
+               let xGroup = plot_bar.append("g").attr("id","x-axis");
+               xGroup.call(xAxis);
+               xGroup.attr("transform","translate(0,"+ plot_height+")");
 
-              d.x = pixels[0];
-              d.y = pixels[1];
-            });
+               let yGroup = plot_bar.append("g").attr("id","y-axis");
+               yGroup.call(yAxis);
+               // yGroup.attr("transform", "translate("+plot_width+",0)");
 
-            const symbols = g.arrests.selectAll("circle")
-              .data(json)
-              .enter()
-              .append("circle")
-              .attr("cx", d => d.x)
-              .attr("cy", d => d.y)
-              .attr("r", 5)
-              .attr("class", "symbol");
 
-            symbols.on("mouseover", function(d) {
-              d3.select(this).raise();
-              d3.select(this).classed("active", true);
+               console.log("pairs: ",pairs);
+               let bars = bar_svg.selectAll("rect")
+                                  .data(pairs,function(d){
+                                    return d;});
 
-              // use template literal for the detail table
-              // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-              const html = `
-                <table border="1" cellspacing="0" cellpadding="2">
-                <tbody>
-                  <tr>
-                    <th>Incident:</th>
-                    <td>${d.service_request_id}</td>
-                  </tr>
-                  <tr>
-                    <th>Date:</th>
-                    <td>${new Date(d.requested_datetime).toDateString()}</td>
-                  </tr>
-                  <tr>
-                    <th> Updated Time:</th>
-                    <td>${d.updated_datetime}</td>
-                  </tr>
-                  <tr>
-                    <th>Police_district:</th>
-                    <td>${d.police_district}</td>
-                  </tr>
-                  <tr>
-                    <th>Category:</th>
-                    <td>${d.service_name}</td>
-                  </tr>
-                </tbody>
-                </table>
-              `;
+               bars.enter()
+                       .append("rect")
+                       .attr("class",function(d){return "bar-"+(d[1]>0 ? "positive":"negative");})
+                       .attr("width",x.bandwidth())
+                       .attr("x",d => x(d[0]))
+                       .attr("y",function(d) { return y(Math.max(0, d[1])); })
+                       .attr("height",function(d){
+                          return Math.abs(y(d[1]) - y(0));
+                       })
+                       .attr("transform", "translate(40,0)");
 
-              body.html(html);
-              details.style("visibility", "visible");
-            });
+              bars.enter()
+                  .append("text")
+                  .text(d=>d[1]+"%")
+                  .attr("x",d => x(d[0]))
+                  .attr("y",function(d) { return y(Math.max(0, d[1])); })
+                  .attr("transform", function(d){
+                    if(d[1]>0){
+                      return "translate(40,0)";
+                    }else{
+                      return  "translate(40,"+(Math.abs(y(d[1]) - y(0))+15)+")";
+                    }
+                  })
+                  .attr("font-size",".8em")
+                  ;
 
-            symbols.on("mouseout", function(d) {
-              d3.select(this).classed("active", false);
-              details.style("visibility", "hidden");
-            });
-          }
+             }
 
-          function translate(x, y) {
-            return "translate(" + String(x) + "," + String(y) + ")";
-          }
+
+          });
 
 
 
-      </script>
+
+        </script>
 				</div>
 			</div>
 		</main>
