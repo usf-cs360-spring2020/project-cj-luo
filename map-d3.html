@@ -408,9 +408,22 @@
                    svg_vis.append("rect")
                        .attr("width", 200)
                        .attr("height", 20)
-                       .style("fill", "url(#linear-gradient)");
+                       .style("fill", "url(#linear-gradient)")
+                       .attr("x","400")
+                       .attr("y","0");
                        // end for append legend
-
+                  svg_vis.append("text")
+                         .text("-50%")
+                         .attr("x","365")
+                         .attr("y","17");
+                 svg_vis.append("text")
+                        .text("50%")
+                        .attr("x","605")
+                        .attr("y","17");
+                  svg_vis.append("text")
+                         .text("MarginofVictory")
+                         .attr("x","440")
+                         .attr("y","40");
                 }
 
                 // add button in svg and then add click event
