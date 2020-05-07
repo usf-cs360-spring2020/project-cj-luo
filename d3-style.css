@@ -9,7 +9,7 @@ div#body {
   margin-left: 10px;
   display: inline-block;
   width: 650px;
-  height: 30px;
+  height: 50px;
 }
 #main-container {
   display: inline-block;
@@ -34,11 +34,11 @@ div#body {
    top: 0;
    left: 0;
    width: 300px;
-   height: 300px;
+   height: 350px;
   }
 #side-details{
-  position: absolute;
-  top: 300px;
+  position: relative;
+  top: 350px;
   left: 0;
   width: 380px;
   height: 200px;
@@ -64,4 +64,74 @@ fill: steelblue;
 
 .bar-negative {
   fill: brown;
+}
+li.year-lables {
+   position: relative;
+   float: left;
+   width: 50px;
+   text-align: center;
+   color: #b2b2b2;
+   font-size: 10px;
+   cursor: pointer;
+
+   &::before {
+      position: absolute;
+      top: -25px;
+      right: 0;
+      left: 0;
+      content: "";
+      margin: 0 auto;
+      width: 9px;
+      height: 9px;
+      background: #b2b2b2;
+      border-radius: 50%;
+    }
+  }
+
+.active {
+  color: #37adbf;
+}
+
+.title {
+  font: 500 100px serif;
+  fill: #e5e5e5;
+  left: 140px;
+}
+
+.party {
+  font: 500 30px serif;
+  fill: #e5e5e5;
+}
+
+#upclick {
+  position: absolute;
+  left: 285px;
+  top: 1410px;
+  /*font: 16px serif;*/
+}
+
+#downclick {
+  position: absolute;
+  left: 285px;
+  top: 1450px;
+  /*font: 16px serif;*/
+}
+.incrbtn {
+  font: 500 30px serif;
+  cursor: pointer;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  /*outline:none;*/
+  color: #e5e5e5;
+}
+
+.incrbtn:hover {
+  color: #ccc;
+}
+#map-chart-label{
+  font-size: 20px;
+  text-align: center;
 }

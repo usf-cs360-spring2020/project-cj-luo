@@ -3,415 +3,638 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>CS360/560 Final Project</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CS360/560 Final Project</title>
 
-        <!-- Required CSS files -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/owl.carousel.css">
-    <link rel="stylesheet" href="assets/css/barfiller.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet" href="https://www.jq22.com/jquery/font-awesome.4.7.0.css">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/slicknav.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-    <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
-		<script src="https://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-    <link rel="stylesheet" href="d3-style.css">
+  <!-- Required CSS files -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/owl.carousel.css">
+  <link rel="stylesheet" href="assets/css/barfiller.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://www.jq22.com/jquery/font-awesome.4.7.0.css">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/slicknav.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+
+  <link rel="stylesheet" href="d3-style.css">
 </head>
 
 <body>
-    <div class="preloader">
-        <span class="preloader-spin"></span>
-    </div>
-    <div class="site">
-		<header id="header">
-			<div class="container">
-				<div class="row">
-					<div class="col-6 col-sm-3 logo-column">
-						<h3><a href="index.html" class="logo">Final Project</a></h3>
-					</div>
-					<div class="col-6 col-sm-9 nav-column clearfix">
-						<nav id="menu" class="d-none d-lg-block">
-							<ul>
-								<li><a href="index.html">Home</a></li>
-								<li class="current-menu-item"><a href="dataset.html">DataSet</a></li>
-                <li><a href="phototype.html">Phototype</a></li>
-							</ul>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</header>
-		<main id="main">
-			<div class="page-title sp" style="background-image: url(assets/img/home-banner.jpg);background-size: cover">
-				<div class="container text-center">
-					<!-- <h2>About D3 Implementation</h2> -->
-					<!-- <p>For this project, we will collect data from Fire Departmemt.</p> -->
-				</div>
-			</div>
-			<div class="about-area sp">
-				<div class="container content-main">
-					<h4>Map Implementation</h4>
-          <p>Visualize the <a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">“ SF 311 dataset”. </a>
-          Filtering the dataset to show cases that were OPENED in the month of February 2020 only and its Category is <strong>Residential Building Request</strong>. </p>
-          <p>In basemap,I use <strong>current police districts</strong> as a map projection and shows the Boundaries of difference districts.</p>
-          <p>I choose <strong>choropleth map</strong> to visualize the dateset. I rollup the "residential building request" cases by districts
-          and visualize a numerical value using fill colr for that region.</p>
-          <hr>
-          <h4>Visualization Writeup</h4>
-          <ul>
-            <li><strong>Encoding: </strong>The number of cases in different districts is encoded by the depth of filled color, so greener color represents higher number of cases.</li>
-            <li><strong>Interactivity: </strong>
-            <ul>
-                <li><strong>Hovering And Tooltips: </strong>show details when the mouse hovers over a region and/or symbol.</li>
-                <li><strong>Zooming And Panning:: </strong>Allow users to zoom in on a region (either mouse scroll or click) and pan (drag) the view while zoomed in.</li>
-            </ul>
-          </li>
-            <li><strong>Wrangling: </strong>Filtering the dataset to show cases that were OPENED in the month of February 2020 only and its Category is Residential Building Request</li>
-            <li><strong>Conclusion: </strong>The map shows the northern district and central district have more number of 311 cases which is residental building request. But I think
-            using or calculate a per sq ft or per ratio will be more accurately.</li>
-          </ul>
+  <div class="preloader">
+    <span class="preloader-spin"></span>
+  </div>
+  <div class="site">
+    <header id="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-6 col-sm-3 logo-column">
+            <h3><a href="index.html" class="logo">Final Project</a></h3>
+          </div>
+          <div class="col-6 col-sm-9 nav-column clearfix">
+            <nav id="menu" class="d-none d-lg-block">
+              <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="current-menu-item"><a href="dataset.html">DataSet</a></li>
+                <li class="has-child">
+                  <a href="#">Phototype</a>
+                  <ul class="sub-menu">
+                    <li><a href="phototype_alpha.html"><i class="fa fa-pie-chart"></i> Alpha Release </a></li>
+                    <li><a href="phototype.html"><i class="fa fa-area-chart"></i> Beta Release </a></li>
+                  </ul>
+                </li>
+                <li class="has-child">
+                  <a href="#">D3 implementation</a>
+                  <ul class="sub-menu">
+                    <li><a href="map-d3.html"><i class="fa fa-pie-chart"></i> Election Map</a></li>
+                    <li><a href="scatter.html"><i class="fa fa-area-chart"></i> Election Scatter Chart</a></li>
+                  </ul>
+                </li>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main id="main">
+      <div class="page-title sp" style="background-image: url(assets/img/home-banner.jpg);background-size: cover">
+        <div class="container text-center">
+          <!-- <h2>About D3 Implementation</h2> -->
+          <!-- <p>For this project, we will collect data from Fire Departmemt.</p> -->
+        </div>
+      </div>
+      <div class="about-area sp">
+        <div class="container content-main">
+          <h4>Election Map Implementation</h4>
+          <p><strong>Finding: </strong>We can draw conclusions from the Presidential map: the same few swing states usually decide the election, the country is getting more polarized, and there is evidence of a partisan realignment. New England states used to be reliably Republican, but since 1992 they have been reliably Democratic. In the 1990s a Southern Democrat like Bill Clinton was able to win Southern states, but they are now uniformly Republican, and have gotten more and more Republican leaning over time. </p>
+          <p>The country has become more polarized politically, and there are fewer states where the margin of victory is small. This means that fewer states swing between parties from one election to the next, and the states that do swing have disproportionate impact on the election</p>
 
-          <br>
+              <hr>
+              <h4>Visualization Writeup</h4>
+              <ul>
+                <li><strong>Encoding: </strong>
+                  In general, the red color represents Republic party and blue presents Democrat party. The color is represents the margin of victory, deeper color presents
+                  higer margin. You could easily find out  swing states where the margin of victory was less than 5%(close to grey).
+                </li>
+                <li><strong>Interactivity: </strong>
+                  <ul>
+                    <li><strong>Hovering And Tooltips: </strong>
+                    <ul>
+                      <li>When hover a state, a tootlip shows information on the winning candidate, the margin of victory, and the number of electoral votes. Also, when you hover a specify state, the stroke of state will raise and the opacity will become lower.</li></ul>
+                    <li><strong>Clicking And Filter: </strong>
+                      <ul>
+                        <li>When click a state, a time-series bar graph will show up on your right hand site, which you clearly see how this state change their seat over year.</li>
+                        <li>There have two button the left hand side. Upclick the button and downclick the button to change the choropleth election map of selected year.</li>
+                      </ul>
+                  </ul>
+                </li>
+                <li><strong>Wrangling: </strong>Filtering the dataset and then python to combine data from different years.</li>
+                <!-- <li><strong>Conclusion: </strong>We can also draw conclusions from the Presidential map: the same few swing states usually decide the election, the country is getting more polarized, and there is evidence of a partisan realignment. New England states used to be reliably Republican, but since 1992 they have been reliably Democratic. In the 1990s a Southern Democrat like Bill Clinton was able to win Southern states, but they are now uniformly Republican, and have gotten more and more Republican leaning over time. The country has become more polarized politically, and there are fewer states where the margin of victory is small. This means that fewer states swing between parties from one election to the next, and the states that do swing have disproportionate impact on the election</li> -->
+                </ul>
 
-          <figure>
-            <h1>US Electional Map Sized by Electional Votes</h1>
-            <div id="body">
-              <div class="main-container">
-                <div id="#date-slider-container" data-role="fieldcontain">
-                  <span id="date-slider-value-label" class="label">Year: </span><span id="date-slider-value"></span>
-                  <span id="date-slider-min-label"></span>
-                  <input type="range" name="date-slider" id="date-slider" value="25" min="0" max="100" style="display:none;"/>
-                  <span id="date-slider-max-label"></span>
-                  </div>
-              </div>
+                <br>
+                <button class="incrbtn" id="upclick" >&#9650;</button>
+                <button class="incrbtn" id="downclick">&#9660;</button>
 
-                <div class="side-container">
-                <div class="bar-chart-header">
-                  	<span id="bar-chart-state-label">State: NewYork</span>
-                </div>
+                <figure>
+                  <h4>US Electional Map(1984 to 2016)</h4>
 
-                </div>
-              <div id="main-container">
-				            <!-- <div id="cartogram"> </div> -->
+                  <div id="body">
+                    <div class="main-container">
+                      <div id="date-slider-container" data-role="fieldcontain">
+                        <p id= "map-chart-label">2016 President Election Result</p>
+                      </div>
+                    </div>
+
+                    <div class="side-container">
+                      <div id="bar-chart-header">
+                        <p id= "bar-chart-label">State: Florida(FL)</p>
+                      </div>
+
+                    </div>
+                    <div id="main-container">
+                      <!-- <div id="cartogram"> </div> -->
                       <svg width="650" height="500" id="vis"></svg>
-			        </div>
-              <!-- bar chart -->
-              <div id="side-container">
-                <div id="vote-chart">
-                    <svg width="380" height="300" id="vis_bar"></svg>
-                </div>
-                <div id="side-details">
+                      <div class="year-button" width="30" height="30">
+                        <!-- https://www.w3schools.com/cssref/pr_pos_z-index.asp -->
+                      </div>
 
-                </div>
-              </div>
-            </div>
-            <br>
-          <!-- <svg width="960" height="600" id="vis">
-            <g id = "basemap"></g>
-          </svg> -->
+                    </div>
+                    <!-- bar chart -->
+                    <div id="side-container">
+                      <div id="vote-chart">
+                        <svg width="380" height="350" id="vis_bar"></svg>
+                      </div>
+                      <div id="side-details">
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <!-- <svg width="960" height="600" id="vis">
+                  <g id = "basemap"></g>
+                </svg> -->
 
-         <figcaption>
-           Source: <a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">311 Department cases Reports: February 2020</a> (<a href="https://data.sfgov.org/City-Infrastructure/311-Cases/vw6y-z8j6">Police District</a>)
-         </figcaption>
-        </figure>
-
-        <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script src="https://d3js.org/topojson.v2.min.js"></script>
-        <script src="https://d3js.org/d3-geo.v1.min.js"></script>
-
-
-        <script type="text/javascript">
-          //add details widget
-          const details = d3.select("body").select("#side-details")
-                            .append("foreignObject")
-                            .attr("id", "details")
-                            .attr("width", 300)
-                            .attr("height", 200)
-                            .attr("x", 800)
-                            .attr("y", 800);
-
-          const body_detail = details.append("xhtml:body")
-                                      .style("text-align", "center")
-                                      .style("background", "none")
-                                      .html("<p>N/A</p>");
-
-          details.style("visibility", "hidden");
+                <figcaption>
+                  Source: <a href="https://transition.fec.gov/pubrec/electionresults.shtml">Federal Election Commission</a> (<a href="https://transition.fec.gov/pubrec/electionresults.shtml">president election</a>)
+                </figcaption>
+              </figure>
 
 
 
+              <script src="https://d3js.org/d3.v5.min.js"></script>
+              <script src="https://d3js.org/topojson.v2.min.js"></script>
+              <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 
 
-          // draw basemap
-          const svg_vis = d3.select("body").select("svg#vis");
-          const g = {
-            basemap: svg_vis.select("g#basemap")
-          };
-
-          // tooltip
-          const tip = svg_vis.append("text").attr("id", "tooltip");
-          tip.attr("text-anchor", "end");
-          tip.attr("dx", -5);
-          tip.attr("dy", -5);
-          tip.style("visibility", "hidden");
-
-          let projection = d3.geoAlbersUsa()
-                              .scale(800)
-                              .translate([650/2,500/2]);
-
-          let path = d3.geoPath().projection(projection);
-          d3.json("dataset/us_states.json").then(function(us){
-            // console.log(us);
-          svg_vis.selectAll('.states')
-              	.data(topojson.feature(us, us.objects.usStates).features)
-              	.enter()
-              	.append('path')
-              	.attr('class', 'states')
-              	.attr('d', path)
-              	.on('mouseover', function(d,i){
-                  d3.select(this).raise().style('fill-opacity', 0.5);
-                  d3.select(this).raise();
-                  const html = `
-                        <p>States Name:${d.properties.STATE_ABBR}</p>
-                        <table border="0" cellspacing="0" cellpadding="2">
-                        <tbody>
-                          <tr>
-                            <th>Incident:</th>
-                            <td>${d.properties.STATE_ABBR}</td>
-                          </tr>
-
-                        </tbody>
-                        </table>
-                      `;
-
-                      body_detail.html(html);
-                      details.style("visibility", "visible");
-		              })
-                .on('mouseout', function(d, i) {
-                    d3.selectAll('.states').raise()
-                            .style('fill-opacity',1);
-                })
-              ;
-
-            // deal with data
-            let time_format = d3.timeFormat("%Y");
-            let time_parse = d3.timeParse("%d-%m-%Y");
+              <script type="text/javascript">
 
 
-            let margins_arr =[];
-            let map = new Map();
-            let state_bar_arr = new Map();
-            let x_domian_arr = [];
-            let y_domian_arr = [];
+              let abbr_state_pairs = new Map();
 
-
-            d3.csv("dataset/us_elections.csv").then(clearData);
-
-            function clearData(data){
-              let filter_by_states = data.filter(function(d,i){
-                return d.Abbrev == "FL";
-              })
-
-
-              filter_by_states.forEach((item, i) => {
-                    x_domian_arr[i]= time_format(time_parse(item.Year));
-                    y_domian_arr[i]= parseFloat(item.MarginofVictory);
-                    state_bar_arr.set(time_format(time_parse(item.Year)),parseFloat(item.MarginofVictory));
+              d3.csv("dataset/abbr_states_pairs.csv").then(function(d){
+                d.forEach((item, i) => {
+                  abbr_state_pairs.set(item.Abbrev,item.FullName);
                 });
-              // console.log(x_domian_arr.sort());
-              // console.log(state_bar_arr);
-
-            // filter by year
-              data = data.filter(function(d,i){
-                return time_format(time_parse(d.Year)) == 2004;
               })
 
-              // console.log(data.length);
-              data.forEach((item, i) => {
+              //add tootlip in side-details
+              const tootlip = d3.select("body").select("#side-details")
+              .append("xhtml:body")
+              .style("text-align", "center")
+              .style("background", "none");                            ;
+
+
+              // add details widget
+              const details = d3.select("body").select("#bar-chart-header");
+
+              const body_detail = details.append("xhtml:body")
+              .style("text-align", "center")
+              .style("background", "none");
+
+              let time_format = d3.timeFormat("%Y");
+              let time_parse = d3.timeParse("%d-%m-%Y");
+              let stateCode;
+
+              // draw basemap
+              const svg_vis = d3.select("body").select("svg#vis");
+              const g = {
+                basemap: svg_vis.select("g#basemap")
+              };
+
+
+              //add year in map_svg
+              var title = svg_vis.append("text")
+              .attr("class", "title")
+              .attr("dy", 500-10)
+              .attr("dx", ".35em")
+              .text("2016");
+
+              var demtext = svg_vis.append("text")
+              .attr("class", "party")
+              .attr("dy", 500-50)
+              .attr("dx", 243)
+              .text("D: 227");
+
+              var reptext = svg_vis.append("text")
+              .attr("class", "party")
+              .attr("dy", 500-14)
+              .attr("dx", 243)
+              .text("R: 304");
+
+
+              //draw base map
+              let projection = d3.geoAlbersUsa()
+              .scale(800)
+              .translate([650/2,500/2]);
+
+              let path = d3.geoPath().projection(projection);
+
+
+              //store the data of election
+              let data_new=[];
+              // filter data common used by two function
+              let margins_arr =[];
+              let map = new Map();
+              let year_data= [];
+
+
+              d3.csv("dataset/us_elections.csv").then(function(d){
+                d.forEach((item,i) => {
+                  data_new.push(item);
+                });
+              });
+
+
+
+              d3.json("dataset/us_states.json").then(function(us){
+                // console.log("usmap",us);
+                svg_vis.selectAll('.states')
+                .data(topojson.feature(us, us.objects.usStates).features)
+                .enter()
+                .append('path')
+                .attr('class', 'states')
+                .attr('d', path)
+                .on('mouseover', function(d,i){
+                  d3.select(this).style('fill-opacity', 0.5).style('stroke','black');
+                  // console.log("here",year_data);
+                  var selected_data_hover =year_data[map.get(d.properties.STATE_ABBR)];
+                  // console.log(selected_data_hover);
+                  var html_tooltip = `
+                  <table border="0" cellspacing="0" cellpadding="2">
+                  <tbody>
+                    <tr>
+                      <th>States Name:</th>
+                      <td>${abbr_state_pairs.get(d.properties.STATE_ABBR)} (${d.properties.STATE_ABBR})</td>
+                    </tr>
+                    <tr>
+                      <th>Winning CandiateName:</th>
+                      <td>${selected_data_hover.CandidateName}</td>
+                    </tr>
+                    <tr>
+                      <th>MarginofVictory:</th>
+                      <td>${selected_data_hover.MarginofVictory}</td>
+                    </tr>
+                    <tr>
+                      <th>Party:</th>
+                      <td>${selected_data_hover.Party}</td>
+                    </tr>
+                    <tr>
+                      <th>ElectoralVotes:</th>
+                      <td>${selected_data_hover.ElectoralVotes}</td>
+                    </tr>
+                    <tr>
+                      <th>Year:</th>
+                      <td>${year}</td>
+                    </tr>
+                  </tbody>
+                  </table>
+                  `;
+                  tootlip.html(html_tooltip)
+                         .style("text-align", "center");
+                  tootlip.style("visibility","visible");
+
+                })
+                .on('mouseout', function(d, i) {
+                  tootlip.style("visibility","hidden");
+                  d3.select(this)
+                  .style('stroke','white')
+                  .style('fill-opacity',1);
+
+                })
+
+                .on('click',function(d){
+                  stateCode = d.properties.STATE_ABBR;
+                  // console.log(data_new);
+                  d3.selectAll("svg#vis_bar > *").remove();
+                  drawBarChart(data_new,stateCode);
+                  // console.log(stateCode);
+                  d3.selectAll("#bar-chart-header > *").remove();
+                  d3.select(this);
+                  const html = `
+                  <p>States Name: ${abbr_state_pairs.get(d.properties.STATE_ABBR)} (${d.properties.STATE_ABBR})</p>
+                  `;
+
+                  details.append("xhtml:body")
+                  .style("text-align", "center")
+                  .style("background", "none")
+                  .html(html);
+
+                });
+                var data_us_json = topojson.feature(us, us.objects.usStates).features;
+                // console.log(data_us_json);
+
+                // add state name
+                svg_vis.append("g")
+                .attr("class", "states-names")
+                .selectAll("text")
+                .data(data_us_json)
+                .enter()
+                .append("text")
+                .text(function(d){
+                  return d.properties.STATE_ABBR;
+                })
+                .attr("x", function(d){
+                  return path.centroid(d)[0];
+                })
+                .attr("y", function(d){
+                  return  path.centroid(d)[1];
+                })
+                .attr("text-anchor","middle")
+                .attr('fill', 'black')
+                ;
+
+
+
+
+                d3.csv("dataset/us_elections.csv").then(function(data){
+                  drawColor(data,"2016")
+                });
+                d3.csv("dataset/us_elections.csv").then(function(data){
+                  drawBarChart(data,"FL");
+                });
+
+
+                function drawColor(data,year){
+                  console.log(year);
+                  year_data=[];
+                  data = data.filter(function(d,i){
+                    if(time_format(time_parse(d.Year)) == year){
+                        year_data.push(d);
+                    }
+                    return time_format(time_parse(d.Year)) == year;
+                  })
+                  console.log("here",year_data);
+
+                  // console.log(data.length);
+                  data.forEach((item, i) => {
                     margins_arr[i]=parseFloat(item.MarginofVictory);
                     item.ElectoralVotes =parseInt(item.ElectoralVotes);
                     map.set(item.Abbrev,i);
+                    // console.log(map);
+                  });
+
+                  //color
+                  // d3.schemeRdBu[k]
+                  //https://www.visualcinnamon.com/2016/05/smooth-color-legend-d3-svg-gradient
+                  console.log(margins_arr);
+                  console.log(d3.min(margins_arr));
+                  const color= d3.scaleQuantile()
+                  // .domain(d3.min(margins_arr),d3.max(margins_arr))
+                  .domain([-50,50])
+                  .range(["brown","steelblue"]);
+
+                  const color_new = d3.scaleLinear()
+                  .clamp(true)
+                  .domain([-7,0,7])
+                  .range(["#B2182B","#B7B7B7","#2166AC"]);
+
+
+
+                  const states_outline = svg_vis.selectAll(".states")
+                  .style("fill",function(d){
+                    var id = map.get(d.properties.STATE_ABBR)
+                    return color_new(parseFloat(margins_arr[id]))
+                  });
+
+
+                  //append legend
+                  // var div = svg_vis.append("foreignObject").attr("id","legend").style("fill","white");
+
+                  var defs = svg_vis.append("defs");
+                  var linearGradient = defs.append("linearGradient")
+                                           .attr("id", "linear-gradient")
+                                           .attr("x",300);
+
+
+
+                  linearGradient.attr("x1", "0%")
+                     .attr("y1", "0%")
+                     .attr("x2", "100%")
+                     .attr("y2", "0%")
+
+                   linearGradient.selectAll("stop")
+                       .data([
+                           {offset: "0%", color: "#d7191c"},// red
+                           {offset: "50%", color: "#B7B7B7"},//gred
+                           {offset: "100%", color: "#2166AC"},//blue
+                         ])
+                       .enter().append("stop")
+                       .attr("offset", function(d) { return d.offset; })
+                       .attr("stop-color", function(d) { return d.color; });
+
+                  // svg_vis.append("foreignObject").attr("id","legend").attr("transform","translate(0,300)").style("fill","yellow");
+                   svg_vis.append("rect")
+                       .attr("width", 200)
+                       .attr("height", 20)
+                       .style("fill", "url(#linear-gradient)");
+                       // end for append legend
+
+                }
+
+                // add button in svg and then add click event
+                var years = [1984,1988,1992,1996,2000,2004,2008,2012,2016];
+                var year = year? year: years[0];
+                // var R_party_election=[RonaldReagan,George Bush,George Bush,Robert Dole,George W. Bush, George W. Bush,John S. McCain,W. Mitt Romney,Donald J. Trump];
+                // var D_party_election =[Walter F. Mondale,Michael S. Dukakis,William J. Clinton,William J. Clinton,Albert Gore, Jr.,John F. Kerry,Barack H. Obama (I),Barack H. Obama (I),Hillary R. Clinton];
+                var R_vote_number =[525,426,370,159,271,173,286,206,304];
+                var D_vote_number =[13,111,168,379,266,365,251,332,227];
+
+                function upclick() {
+                  year += 4;
+
+                  if (year > years[years.length - 1]) {
+                    year = years[0]
+                  }
+
+                  title.text(year);
+                  var s_d = "D: "+R_vote_number[(year-1984)/4];
+                  var s_r = "R: "+D_vote_number[(year-1984)/4];
+                  demtext.text(s_d);
+                  reptext.text(s_r);
+
+                  // drawColor(data_new, year);
+                  drawColor.call(this,data_new, year);
+                  d3.selectAll("#date-slider-container > *").remove();
+                  d3.select(this).raise();
+                  // (${D_party_election[(year-1984)/4]} VS  ${R_party_election[(year-1984)/4]})
+                  const html = `
+                  <p id= "map-chart-label">${year} President Election Result</p>
+                  `;
+
+                  d3.select("#date-slider-container").append("xhtml:body")
+                  .style("text-align", "center")
+                  .style("background", "none")
+                  .html(html);
+                }
+
+                function downclick() {
+                  year -= 4;
+
+                  if (year < years[0]) {
+                    year = years[years.length - 1];
+                  }
+                  title.text(year);
+                  var s_d = "D: "+R_vote_number[(year-1984)/4];
+                  var s_r = "R: "+D_vote_number[(year-1984)/4];
+                  demtext.text(s_d);
+                  reptext.text(s_r);
+                  drawColor.call(this,data_new, year);
+                  d3.selectAll("#date-slider-container > *").remove();
+                  d3.select(this).raise();
+                  // (${D_party_election[(year-1984)/4]} VS  ${R_party_election[(year-1984)/4]})
+                  const html = `
+                  <p id= "map-chart-label">${year} President Election Result</p>
+                  `;
+
+                  d3.select("#date-slider-container").append("xhtml:body")
+                  .style("text-align", "center")
+                  .style("background", "none")
+                  .html(html);
+                }
+
+                d3.select('#upclick').on("click", upclick);
+                d3.select('#downclick').on("click", downclick);
+
+
+              });// end d3.json
+
+
+
+              function drawBarChart(data,state){
+                // console.log("here",data);
+                var state_bar_arr = new Map();
+                var x_domian_arr = [];
+                var y_domian_arr = [];
+
+                let filter_by_states = data.filter(function(d,i){
+                  return d.Abbrev == state;
+                })
+                // console.log(filter_by_states);
+                filter_by_states.forEach((item, i) => {
+                  x_domian_arr[i]= time_format(time_parse(item.Year));
+                  y_domian_arr[i]= parseFloat(item.MarginofVictory);
+                  state_bar_arr.set(time_format(time_parse(item.Year)),parseFloat(item.MarginofVictory));
                 });
+                // draw bar chart
+                let margin = {
+                  top:20,
+                  right: 20,
+                  left:40,
+                  bottom:30
+                }
+
+                let bar_svg = d3.select("body").selectAll("svg#vis_bar");
+
+                bar_svg.width = 380;
+                bar_svg.height =300;
+
+                let plot_width = bar_svg.width - margin.right - margin.left;
+                let plot_height = bar_svg.height- margin.top - margin.bottom;
+
+                // console.log("height:",plot_height);
 
 
+                // we need our data as an array of key, value pairs before binding
+                // console.log( state_bar_arr);
+                let pairs = Array.from(state_bar_arr);
 
-              //color
-              const color= d3.scaleQuantile()
-                             .domain([-50,50])
-                             .range(["brown","steelblue"]);
+                pairs.sort(function(a,b){
+                  return a[0]-b[0];
+                })
 
+                console.log("y_domain",d3.min(y_domian_arr));
+                let x = d3.scaleBand()
+                .domain(x_domian_arr.sort())
+                .rangeRound([0,plot_width])
+                .paddingInner(0.1);
 
-              const states_outline = svg_vis.selectAll(".states")
-                                            .style("fill",function(d){
-                                              var id = map.get(d.properties.STATE_ABBR)
-                                                 return color(parseFloat(margins_arr[id]))
-                                              });
-
-              svg_vis.selectAll(".states")
-                      .on("mourseover",function(d){
-                        d3.select(this).raise();
-                        const html = `
-                              <table border="0" cellspacing="0" cellpadding="2">
-                              <tbody>
-                                <tr>
-                                  <th>Incident:</th>
-                                  <td>${d.properties.STATE_ABBR}</td>
-                                </tr>
-
-                              </tbody>
-                              </table>
-                            `;
-
-                            body_details.html(html);
-                            details.style("visibility", "visible");
-                          });
-
-
+                let y = d3.scaleLinear()
+                .domain([d3.min(y_domian_arr)-5,Math.max(d3.max(y_domian_arr),0)])
+                .range([plot_height,0])
+                .nice();
                 //
-                // svg_vis.selectAll(".states").on("mouseout", function(d) {
-                //         d3.select(this).classed("active", false);
-                //         details.style("visibility", "hidden");
-                //         });
+                // console.log("ydomain",state_bar_arr.values());
+                let plot_bar = bar_svg.append("g").attr("id","plot_bar");
+
+                plot_bar.attr("transform","translate("+margin.left+","+ margin.top+")");
+
+                let xAxis = d3.axisBottom(x);
+                let yAxis = d3.axisLeft(y).ticks(6).tickFormat(d => d + "%");
+
+                let xGroup = plot_bar.append("g").attr("id","x-axis");
+                xGroup.call(xAxis);
+                xGroup.attr("transform","translate(0,"+ plot_height+")");
+
+                let yGroup = plot_bar.append("g").attr("id","y-axis");
+                yGroup.call(yAxis);
+                // yGroup.attr("transform", "translate("+plot_width+",0)");
 
 
+                // console.log("pairs: ",pairs);
+                let bars = bar_svg.selectAll("rect")
+                .data(pairs,function(d){
+                  return d;});
 
+                  bars.enter()
+                  .append("rect")
+                  .attr("class",function(d){return "bar-"+(d[1]>0 ? "positive":"negative");})
+                  .attr("width",x.bandwidth())
+                  .attr("x",d => x(d[0]))
+                  .attr("y",function(d) { return y(Math.max(0, d[1])); })
+                  .attr("height",function(d){
+                    return Math.abs(y(d[1]) - y(0));
+                  })
+                  .attr("transform", "translate(40,20)");
 
-              // draw bar chart
-              let margin = {
-                top:20,
-                right: 20,
-                left:40,
-                bottom:30
-              }
-
-              let bar_svg = d3.select("body").selectAll("svg#vis_bar");
-
-              bar_svg.width = 380;
-              bar_svg.height = 300;
-
-              let plot_width = bar_svg.width - margin.right - margin.left;
-              let plot_height = bar_svg.height- margin.top - margin.bottom;
-
-              // console.log("height:",plot_height);
-
-
-              // we need our data as an array of key, value pairs before binding
-              console.log( state_bar_arr);
-              let pairs = Array.from(state_bar_arr);
-
-              pairs.sort(function(a,b){
-                return a[0]-b[0];
-              })
-
-              console.log("y_domain",d3.min(y_domian_arr));
-              let x = d3.scaleBand()
-                                .domain(x_domian_arr.sort())
-                                .rangeRound([0,plot_width])
-                                .paddingInner(0.1);
-
-               let y = d3.scaleLinear()
-                                   .domain([d3.min(y_domian_arr),d3.max(y_domian_arr)])
-                                   .range([plot_height,0])
-                                   .nice();
-              //
-              // console.log("ydomain",state_bar_arr.values());
-               let plot_bar = bar_svg.append("g").attr("id","plot_bar");
-
-               plot_bar.attr("transform","translate("+margin.left+","+ margin.top+")");
-
-               let xAxis = d3.axisBottom(x);
-               let yAxis = d3.axisLeft(y);
-
-               let xGroup = plot_bar.append("g").attr("id","x-axis");
-               xGroup.call(xAxis);
-               xGroup.attr("transform","translate(0,"+ plot_height+")");
-
-               let yGroup = plot_bar.append("g").attr("id","y-axis");
-               yGroup.call(yAxis);
-               // yGroup.attr("transform", "translate("+plot_width+",0)");
-
-
-               console.log("pairs: ",pairs);
-               let bars = bar_svg.selectAll("rect")
-                                  .data(pairs,function(d){
-                                    return d;});
-
-               bars.enter()
-                       .append("rect")
-                       .attr("class",function(d){return "bar-"+(d[1]>0 ? "positive":"negative");})
-                       .attr("width",x.bandwidth())
-                       .attr("x",d => x(d[0]))
-                       .attr("y",function(d) { return y(Math.max(0, d[1])); })
-                       .attr("height",function(d){
-                          return Math.abs(y(d[1]) - y(0));
-                       })
-                       .attr("transform", "translate(40,0)");
-
-              bars.enter()
+                  bars.enter()
                   .append("text")
                   .text(d=>d[1]+"%")
                   .attr("x",d => x(d[0]))
                   .attr("y",function(d) { return y(Math.max(0, d[1])); })
                   .attr("transform", function(d){
                     if(d[1]>0){
-                      return "translate(40,0)";
+                      return "translate(40,20)";
                     }else{
-                      return  "translate(40,"+(Math.abs(y(d[1]) - y(0))+15)+")";
+                      return  "translate(40,"+(Math.abs(y(d[1]) - y(0))+35)+")";
                     }
                   })
-                  .attr("font-size",".8em")
-                  ;
-
-             }
-
-
-          });
+                  // .attr("transform","translate(0,20)")
+                  .attr("font-size",".8em");
 
 
 
+                  //append label for x axis
+                  plot_bar.append("text")
+                      .text("Election Year")
+                      .attr("x",plot_width/2-40)
+                      .attr("y",plot_height+50);
+                }
 
-        </script>
-				</div>
-			</div>
-		</main>
-		<footer>
-			<div class="footer-bottom">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-6">
-							<div class="copyright-txt">
-								Copyright &copy; 2020. All rights reserved.
-							</div>
-						</div>
-						<div class="col-lg-6 text-right">
-							<div class="footer-nav">
-								<a href="index.html">Home</a>
-								<a href="dataset.html">Dataset</a>
-								<a href="data.html">Data</a>
-								<a href="team.html">Team</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-    </div>
 
-    <!--Required JS files-->
-<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-<script src="assets/js/vendor/popper.min.js"></script>
-<script src="assets/js/vendor/bootstrap.min.js"></script>
-<script src="assets/js/vendor/owl.carousel.min.js"></script>
-<script src="assets/js/vendor/isotope.pkgd.min.js"></script>
-<script src="assets/js/vendor/jquery.barfiller.js"></script>
-<script src="assets/js/vendor/loopcounter.js"></script>
-<script src="assets/js/vendor/slicknav.min.js"></script>
-<script src="assets/js/active.js"></script>
 
-</body>
 
-</html>
+
+
+                </script>
+              </div>
+            </div>
+          </main>
+          <footer>
+            <div class="footer-bottom">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="copyright-txt">
+                      Copyright &copy; 2020. All rights reserved.
+                    </div>
+                  </div>
+                  <div class="col-lg-6 text-right">
+                    <div class="footer-nav">
+                      <a href="index.html">Home</a>
+                      <a href="dataset.html">Dataset</a>
+                      <a href="data.html">Data</a>
+                      <a href="team.html">Team</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+
+        <!--Required JS files-->
+        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+        <script src="assets/js/vendor/popper.min.js"></script>
+        <script src="assets/js/vendor/bootstrap.min.js"></script>
+        <script src="assets/js/vendor/owl.carousel.min.js"></script>
+        <script src="assets/js/vendor/isotope.pkgd.min.js"></script>
+        <script src="assets/js/vendor/jquery.barfiller.js"></script>
+        <script src="assets/js/vendor/loopcounter.js"></script>
+        <script src="assets/js/vendor/slicknav.min.js"></script>
+        <script src="assets/js/active.js"></script>
+
+      </body>
+
+      </html>

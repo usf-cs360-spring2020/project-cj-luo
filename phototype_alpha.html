@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CS360/560 Final Project Phototype</title>
+
+        <!-- Required CSS files -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/barfiller.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://www.jq22.com/jquery/font-awesome.4.7.0.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body>
+    <div class="preloader">
+        <span class="preloader-spin"></span>
+    </div>
+    <div class="site">
+		<header id="header">
+			<div class="container">
+				<div class="row">
+					<div class="col-6 col-sm-3 logo-column">
+						<h3><a href="index.html" class="logo">Final Project</a></h3>
+					</div>
+					<div class="col-6 col-sm-9 nav-column clearfix">
+						<nav id="menu" class="d-none d-lg-block">
+							<ul>
+								<li><a href="index.html">Home</a></li>
+                <li><a href="dataset.html">Dataset</a></li>
+                <li class="has-child">
+                  <a href="#">Phototype</a>
+                  <ul class="sub-menu">
+                    <li><a href="phototype_alpha.html"><i class="fa fa-pie-chart"></i> Alpha Release </a></li>
+                    <li><a href="phototype.html"><i class="fa fa-area-chart"></i> Beta Release </a></li>
+                    <!-- <li><a href="#"><i class="fa fa-area-chart"></i> Area Chart</a></li>
+                    <li><a href="#"><i class="fa fa-line-chart"></i> Line Chart</a></li> -->
+                  </ul>
+                </li>
+                <li class="has-child">
+                  <a href="#">D3 implementation</a>
+                  <ul class="sub-menu">
+                    <li><a href="map-d3.html"><i class="fa fa-pie-chart"></i> Election Map</a></li>
+                    <li><a href="scatter.html"><i class="fa fa-area-chart"></i> Election Scatter Chart</a></li>
+                    <!-- <li><a href="#"><i class="fa fa-area-chart"></i> Area Chart</a></li>
+                    <li><a href="#"><i class="fa fa-line-chart"></i> Line Chart</a></li> -->
+                  </ul>
+                </li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</header>
+		<main id="main">
+			<div class="page-title sp" style="background-image: url(assets/img/home-banner.jpg);background-size: cover">
+				<div class="container text-center">
+					<!-- <h2>About Dataset</h2> -->
+					<!-- <p>For this project, we will collect data from Fire Departmemt.</p> -->
+				</div>
+			</div>
+			<div class="about-area sp">
+				<div class="container content-main">
+					<h4>Phototype</h4>
+          <p>Visualize the <a href="https://www.fec.gov/?state=&election_full=true">“ Presidental Election” </a></p>
+          <h5>Is there a visible voting patterns of US Presidential Election from 1984 to 2016?</h5>
+          <p>We may be can draw conclusions from the Presidential map:
+            the same few swing states usually decide the election, the country is getting more polarized,
+            and there is evidence of a partisan realignment.</p>
+            <!-- <p>New England states used to be reliably Republican,
+            but since 1992 they have been reliably Democratic. In the 1990s a Southern Democrat like Bill Clinton was able to win Southern states,
+             but they are now uniformly Republican, and have gotten more and more Republican leaning over time.
+              The country has become more polarized politically, and there are fewer states where the margin of victory is small.
+              This means that fewer states swing between parties from one election to the next, and the states that do swing have disproportionate impact on the election.
+            </p> -->
+            <br>
+			     <img src="image/result-map.png" alt="" >
+           <br>
+           <br>
+           <h5>Encoding</h5>
+           <p>
+             I built a geocoded electoral choropleth map in Tableau, using red for Republican states and blue for Democratic states. The depth of color also
+             represents the margin of victory, the darker color means greater margin of victory.
+           </p>
+
+           <br>
+           <hr>
+           <!-- <p>
+             I also created a bar graph to show up the margin of victory. Af first I want to created a time-series line graph to display
+             how the voting patterns in each state have evolved over several elections. However, a line graph didn’t show up well when
+             the margin of victory was close to zero. When I replaced it with a bar graph,
+             I was able to show the difference and contrast the colors more easily.
+           </p> -->
+           <h4>Time-series line chart </h4>
+           <p>In below Diagram, Florida always swithes their seat over year.</p>
+           <img src="image/alpha_release.png" alt="" >
+           <br>
+           <br>
+           <br>
+
+
+           <!-- <h5>Interactivity</h5>
+           <p>
+             I included a tooltip that shows information on the winning candidate, the margin of victory, and the number of electoral votes. I also made a list of the swing states where the margin of victory was less than 5%.
+             I created a time-series bar graph to display how the voting patterns in each state have evolved over several elections.
+           </p>
+
+           <video src="elections.mov" autoplay loop poster="posterimage.jpg" width="960" height="500" > -->
+
+				</div>
+			</div>
+		</main>
+		<footer>
+			<!-- <div class="footer-top">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 col-lg-6 footer_widget">
+							<div class="inner">
+								<h4>About</h4>
+								<p>Each group must determine a cohesive theme for the project. This could be an overall story that each visualization will help tell, or a broad question that each visualization will help answer in different ways.</p>
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-6 footer_widget">
+							<div class="inner">
+								<h4>Credits</h4>
+								<ul>
+									<li><a href="https://www.themeum.com" target="_blank">Theme: Flat Theme</a></li>
+									<li><a href="https://getbootstrap.com/" target="_blank">Framework: Bootstrap</a></li>
+									<li><a href="https://www.freepik.com" target="_blank">Images: freepik</a></li>
+									<li><a href="https://unsplash.com/" target="_blank">Images: Unsplash</a></li>
+									<li><a href="https://fontawesome.com" target="_blank">Icon: FontAwesome</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<div class="footer-bottom">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="copyright-txt">
+								Copyright &copy; 2020. All rights reserved.
+							</div>
+						</div>
+						<div class="col-lg-6 text-right">
+							<div class="footer-nav">
+								<a href="index.html">Home</a>
+								<a href="dataset.html">Dataset</a>
+								<a href="data.html">Data</a>
+								<a href="team.html">Team</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+    </div>
+
+    <!--Required JS files-->
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="assets/js/vendor/popper.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/vendor/owl.carousel.min.js"></script>
+<script src="assets/js/vendor/isotope.pkgd.min.js"></script>
+<script src="assets/js/vendor/jquery.barfiller.js"></script>
+<script src="assets/js/vendor/loopcounter.js"></script>
+<script src="assets/js/vendor/slicknav.min.js"></script>
+<script src="assets/js/active.js"></script>
+
+</body>
+
+</html>
