@@ -136,8 +136,8 @@
               <div id="formholder" >
                 <div id="select">
                   <select id="inds">
-                    <option value="county" >County</option>
-                    <option value="state" selected="selected">State</option>
+                    <option value="county" selected="selected" >County</option>
+                    <option value="state" >State</option>
                     <!-- <option value="race">Race</option>
                     <option value="gender">Gender</option>
                     <option value="age">Age</option>
@@ -180,8 +180,8 @@
 
         //data urls
         var urls = {
-          'county': './US_County_Level_Presidential_Results_04-16.csv',// data from county level
-          'state': './US_State_Level_Presidential_Results_04-16.csv', // datat from state level
+          'county': './dataset/US_County_Level_Presidential_Results_04-16.csv',// data from county level
+          'state': './dataset/US_State_Level_Presidential_Results_04-16.csv', // datat from state level
         }
 
         var percentageFormat = d3.format(".2%");// 0.1233 = 12.34%
@@ -608,7 +608,7 @@
           var years = Object.keys(dataset).map(Number);
           years.sort()
           //var year = years[0];
-          year = year ? year : years[0];
+          year = year ? year : years[years.length-1];
 
           //Create a copy, so it can be edited on drag:
           var yearData = copyObj(dataset[String(year)]);
@@ -654,7 +654,7 @@
 
             var index = (year-2004)/4
 
-            .text('D ' + d_percent[index]+'%' + ' ' + d_vote[index])
+            demtext.text('D ' + d_percent[index]+'%' + ' ' + d_vote[index])
             reptext.text('R ' + r_percent[index]+'%' + ' ' + r_vote[index])
 
             //Update title
@@ -777,6 +777,7 @@
 
 
         renderCounties();
+        // renderStates();
 
 
 
