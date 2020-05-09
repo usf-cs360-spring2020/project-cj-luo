@@ -1,4 +1,4 @@
-state,year,dem_num,state_num,vap,rep_num,state_electoral_votes
+state,year,num_dem,num_state,vap,num_rep,state_electoral_votes
 AK,2004,111025,312598,550189,190889,3
 AK,2008,123594,326197,550189,193841,3
 AK,2012,122640,300495,550189,164676,3

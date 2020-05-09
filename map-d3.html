@@ -95,8 +95,11 @@
                 </ul>
 
                 <br>
-                <button class="incrbtn" id="upclick" >&#9650;</button>
-                <button class="incrbtn" id="downclick">&#9660;</button>
+                <!-- <div class="buttons">
+                  <button class="incrbtn" id="upclick" >&#9650;</button>
+                  <button class="incrbtn" id="downclick">&#9660;</button>
+
+                </div> -->
 
                 <figure>
                   <h4>US Electional Map(1984 to 2016)</h4>
@@ -117,7 +120,9 @@
                     <div id="main-container">
                       <!-- <div id="cartogram"> </div> -->
                       <svg width="650" height="500" id="vis"></svg>
-                      <div class="year-button" width="30" height="30">
+                      <div class="year-button" width="30" height="30" left="0">
+                        <button class="incrbtn" id="upclick" >&#9650;</button>
+                        <button class="incrbtn" id="downclick">&#9660;</button>
                         <!-- https://www.w3schools.com/cssref/pr_pos_z-index.asp -->
                       </div>
 
@@ -431,8 +436,8 @@
                 var year = year? year: years[0];
                 // var R_party_election=[RonaldReagan,George Bush,George Bush,Robert Dole,George W. Bush, George W. Bush,John S. McCain,W. Mitt Romney,Donald J. Trump];
                 // var D_party_election =[Walter F. Mondale,Michael S. Dukakis,William J. Clinton,William J. Clinton,Albert Gore, Jr.,John F. Kerry,Barack H. Obama (I),Barack H. Obama (I),Hillary R. Clinton];
-                var R_vote_number =[525,426,370,159,271,173,286,206,304];
-                var D_vote_number =[13,111,168,379,266,365,251,332,227];
+                var R_vote_number =[525,426,370,159,271,286,173,206,304];
+                var D_vote_number =[13,111,168,379,266,251,365,332,227];
 
                 function upclick() {
                   year += 4;
@@ -442,8 +447,8 @@
                   }
 
                   title.text(year);
-                  var s_d = "D: "+R_vote_number[(year-1984)/4];
-                  var s_r = "R: "+D_vote_number[(year-1984)/4];
+                  var s_d = "D: "+D_vote_number[(year-1984)/4];
+                  var s_r = "R: "+R_vote_number[(year-1984)/4];
                   demtext.text(s_d);
                   reptext.text(s_r);
 
@@ -627,8 +632,8 @@
                     <div class="footer-nav">
                       <a href="index.html">Home</a>
                       <a href="dataset.html">Dataset</a>
-                      <a href="data.html">Data</a>
-                      <a href="team.html">Team</a>
+                      <!-- <a href="data.html">Data</a>
+                      <a href="team.html">Team</a> -->
                     </div>
                   </div>
                 </div>

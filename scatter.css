@@ -1,0 +1,130 @@
+
+body {
+  color: #888;
+  /* font-family:  serif; */
+  font-size:15px;
+}
+
+#svg_div {
+  border:1px solid #ccc;
+  /*  margin-top: 2.5em;
+  margin-bottom: 2.5em;*/
+}
+
+.axis {
+  font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #aaa;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  fill: #858585;
+}
+
+.title {
+  font: 500 100px serif;
+  fill: #e5e5e5;
+}
+
+.party {
+  font: 500 35px serif;
+  fill: #e5e5e5;
+}
+
+.incr {
+  font: 500 35px serif;
+  fill: #e5e5e5;
+  cursor: pointer;
+}
+
+.incr:hover {
+  fill: #ccc;
+}
+
+.circle {
+  stroke: white;
+  stroke-width: 0.2px;
+  /*https://stackoverflow.com/questions/5697067*/
+  cursor: pointer;  /*grab; pointer; move; -webkit-grab;*/
+  fill-opacity: 0.9;
+}
+.circle:active {
+  /*Closed hand*/
+  /*https://stackoverflow.com/questions/5697067*/
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.circle:hover {
+  fill-opacity: 0.8;
+}
+
+#searchform {
+  padding-bottom: 5px;
+}
+
+#formholder {
+  position: absolute;
+  right: 300px;
+  top: 680px;
+  /*font: 16px serif;*/
+}
+
+.incrbtn {
+  font: 500 30px serif;
+  cursor: pointer;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  /*outline:none;*/
+  color: #e5e5e5;
+}
+
+.incrbtn:hover {
+  color: #ccc;
+}
+
+.year-button{
+  position: absolute;
+  /* z-index: auto; */
+  float: left;
+  margin-top: -90px;
+  margin-left: 50px;
+}
+
+#upclick {
+  position: absolute;
+
+  /* left: 285px;
+  top: 1410px;  */
+  /*font: 16px serif;*/
+}
+
+#downclick {
+  position: absolute;
+  /* left:-34px; */
+  top:-30px;
+  /* left: 285px;
+  top: 1450px;  */
+  /*font: 16px serif;*/
+}
+
+#select {
+  padding:5px 0px;
+}
+
+input {
+  /*font: 14px serif;*/
+}
+::placeholder{
+  font-color:#ccc;
+  opacity: 0.3;
+}

@@ -17,125 +17,8 @@
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/slicknav.css">
   <link rel="stylesheet" href="assets/css/main.css">
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <style type="text/css">
-
-
-  body {
-    color: #888;
-    /* font-family:  serif; */
-    font-size:15px;
-  }
-
-  svg {
-    /*  margin-top: 2.5em;
-    margin-bottom: 2.5em;*/
-  }
-
-  .axis {
-    font: 12px sans-serif;
-  }
-
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #aaa;
-    shape-rendering: crispEdges;
-  }
-
-  .axis text {
-    fill: #858585;
-  }
-
-  .title {
-    font: 500 100px serif;
-    fill: #e5e5e5;
-  }
-
-  .party {
-    font: 500 35px serif;
-    fill: #e5e5e5;
-  }
-
-  .incr {
-    font: 500 35px serif;
-    fill: #e5e5e5;
-    cursor: pointer;
-  }
-
-  .incr:hover {
-    fill: #ccc;
-  }
-
-  .circle {
-    stroke: white;
-    stroke-width: 0.2px;
-    /*https://stackoverflow.com/questions/5697067*/
-    cursor: pointer;  /*grab; pointer; move; -webkit-grab;*/
-    fill-opacity: 0.9;
-  }
-  .circle:active {
-    /*Closed hand*/
-    /*https://stackoverflow.com/questions/5697067*/
-    cursor: grabbing;
-    cursor: -moz-grabbing;
-    cursor: -webkit-grabbing;
-  }
-
-  .circle:hover {
-    fill-opacity: 0.8;
-  }
-
-  #searchform {
-    padding-bottom: 5px;
-  }
-
-  #formholder {
-    position: absolute;
-    right: 50px;
-    top: 725px;
-    /*font: 16px serif;*/
-  }
-
-  .incrbtn {
-    font: 500 30px serif;
-    cursor: pointer;
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    /*outline:none;*/
-    color: #e5e5e5;
-  }
-
-  .incrbtn:hover {
-    color: #ccc;
-  }
-
-  #upclick {
-    position: absolute;
-    left: 125px;
-    top: 1150px;
-    /*font: 16px serif;*/
-  }
-
-  #downclick {
-    position: absolute;
-    left: 125px;
-    top: 1200px;
-    /*font: 16px serif;*/
-  }
-
-  #select {
-    padding:5px 0px;
-  }
-
-  input {
-    /*font: 14px serif;*/
-  }
-
-  </style>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="scatter.css">
 </head>
 
 <body>
@@ -184,7 +67,7 @@
     </div>
     <div class="about-area sp">
       <div class="container content-main">
-        <h4>Visualizing Voters Turnout and Margins by County(2004 to 2026) </h4>
+        <h4>Visualizing Voters Turnout and Margins by County(2004 to 2016) </h4>
         <p>In my continuing understand patterns of different states, I know most of states will consistently voted to
           specific party, and the same few swing states usually decide the election. And I want to figure out which county will impact
           the election and how these county changes their seats over time?</p>
@@ -209,1369 +92,744 @@
               <div id="svg_div">
 
               </div>
-              <br>
-              <br>
-              <br>
-
-              <ul>
-                <li>
-                  <strong>Conclusion:</strong>
-                  <p>The left-right sorting is especially apparent in Midwestern swing states that gave the election to Trump. Try searching for WI, PA, MI, IA, MN and clicking through the years to see this sorting in action.</p>
-                </li>
-                <li>
-                  <strong>About</strong>
-                  <p>Every two years, the Commission publishes Federal Elections,
-                    a compilation of the official, certified federal election results obtained from each state’s election office and other official sources.  The above links provide the primary, runoff and general election results for the U.S. Senate,
-                    the U.S. House of Representatives and, when applicable, U.S. President</p>
-                  </li>
-
-                  <div id="formholder" >
-                    <div id="select">
-                      <select id="inds">
-                        <option value="county" selected="selected">County</option>
-                        <option value="state">State</option>
-                        <!-- <option value="race">Race</option>
-                        <option value="gender">Gender</option>
-                        <option value="age">Age</option>
-                        <option value="education">Education</option> -->
-                      </select>
-                    </div>
-                    <span id="searchform" name="myform">
-                      <input type="text" id="myVal" size="30" placeholder="NY, WI, Los Angeles County">
-                      <input id="search" name="Submit" type="button" value="Search" onclick="handleClick();">   <!--onclick="handleClick();"-->
-                      <input type="button" value="Clear" onclick="reset();" >  <!--document.myform.reset();-->
-                      <!-- </form> -->
-                    </span>
-                    <form id="areaform">
-                      Weight:
-                      <input type="radio" name="area" value="vote"  checked>Vote
-                      <!-- <input type="radio" name="area" value="electoral" > Electoral
-                      <input type="radio" name="area" value="vpi" >VPI<br> -->
-                    </form>
-                    <div class="tooltip">
-
-                    </div>
-                  </div>
-
-                  <button class="incrbtn" id="upclick">&#9650;</button>
-                  <button class="incrbtn" id="downclick">&#9660;</button>
-
-                </div>
+              <div class="year-button">
+                <button class="incrbtn" id="upclick">&#9650;</button>
+                <button class="incrbtn" id="downclick">&#9660;</button>
               </div>
-              <script type="text/javascript">
+              <br>
+              <br>
+              <br>
+              <ul>
+              <li>
+                <strong>Conclusion:</strong>
+                <p>The left-right sorting is especially apparent in Midwestern swing states that gave the election to Trump. Try searching for WI, PA, MI, IA, MN and clicking through the years to see this sorting in action.</p>
+              </li>
+              <li>
+                <strong>About</strong>
+                <p>Every two years, the Commission publishes Federal Elections,
+                  a compilation of the official, certified federal election results obtained from each state’s election office and other official sources.  The above links provide the primary, runoff and general election results for the U.S. Senate,
+                  the U.S. House of Representatives and, when applicable, U.S. President</p>
+                </li>
+              </ul>
 
-              // {top: 20, right: 20, bottom: 50, left: 30}
-              var margin = {top: 30, right: 20, bottom: 50, left: 50},
-              width = 1000 - margin.left - margin.right,
-              height = 500 - margin.top - margin.bottom;
+              <div id="formholder" >
+                <div id="select">
+                  <select id="inds">
+                    <option value="county" selected="selected">County</option>
+                    <option value="state">State</option>
+                    <!-- <option value="race">Race</option>
+                    <option value="gender">Gender</option>
+                    <option value="age">Age</option>
+                    <option value="education">Education</option> -->
+                  </select>
+                </div>
+                <span id="searchform" name="myform">
+                  <input type="text" id="myVal" size="30" placeholder="CA,FL,WI, Los Angeles County">
+                  <input id="search" name="Submit" type="button" value="Search" onclick="handleClick();">   <!--onclick="handleClick();"-->
+                  <input type="button" value="Clear" onclick="reset();" >  <!--document.myform.reset();-->
+                  <!-- </form> -->
+                </span>
+                <!-- <form id="areaform">
+                  Weight:
+                  <input type="radio" name="area" value="vote"  checked>Vote
+                  <!-- <input type="radio" name="area" value="electoral" > Electoral
+                  <input type="radio" name="area" value="vpi" >VPI<br> -->
+                <!-- </form> -->
+              <div class="tooltip"></div>
+            </div>
+          </div>
+        </div>
 
-              //Globals:
-              var currentSearch = "";
-              var searchTerms = "";
-              var selection = "county";
-              var year;
-              var cache = {};
+        <script type="text/javascript">
+        var margin = {top: 30, right:20,bottom: 50, left:50};
+            width = 1060 -margin.left - margin.right;
+            height= 600 - margin.top - margin.bottom;
 
-              var locurls = {
-                'county': './US_County_Level_Presidential_Results_04-16.csv',
-                'state': './US_State_Level_Presidential_Results_04-16.csv',
-                'demographic': './US_Demographic_Presidential_Results_04-16.csv'
+        // globals:
+        var currentSearch= "";
+        var searchTerms="";
+        var selection ="county";
+        var year;
+        var cache = {};
+        var d_vote = [251,365,332,227]
+        var r_vote = [286,173,206,304]
+        var d_percent =[48.28,52.93,50.99,48.15]
+        var r_percent = [50.72,45.67,47.14,46.05]
+
+
+        //data urls
+        var urls = {
+          'county': './US_County_Level_Presidential_Results_04-16.csv',// data from county level
+          'state': './US_State_Level_Presidential_Results_04-16.csv', // datat from state level
+        }
+
+        var percentageFormat = d3.format(".2%");// 0.1233 = 12.34%
+        var thousandFormat = d3.format(",");
+
+        function capitalize(string){
+          return string.charAt(0).toUpperCase()+string.slice(1);// make the fist letter capitalize
+          //string.slice(1)means get string from index1 including index1
+        }
+
+        var svg = d3.select("body")
+                    .select("#svg_div")
+                    .append("svg")
+                    .attr("width",width+margin.left+margin.right)
+                    .attr("height",height+margin.top+ margin.bottom)
+                    .append("g")
+                    .attr("transform","translate("+ margin.left+","+margin.top+")");
+
+        //add year title
+        var title = svg.append("text")
+                       .attr("class","title")
+                       .attr("dy",height-10)//set offset to y position
+                       .attr("dx",".35em");//.35em will add half the height of the text to the x dimension
+
+        var demtext = svg.append("text")
+                       .attr("class","party")
+                       .attr("dy",height-50)
+                       .attr("dx",243)
+                       .text("D");
+
+        var reptext = svg.append("text")
+                      .attr("class","party")
+                      .attr("dy",height-14)
+                      .attr("dx",243)
+                      .text("R");
+
+        var xScale = d3.scaleLinear()
+                       .domain([-100,100])
+                       .range([0,width]);
+
+        var yScale = d3.scaleLinear()
+                      .domain([0,100])
+                      .range([height,0]); // from height  0 is the top
+
+        var xAxis = d3.axisBottom(xScale);
+        var yAxis = d3.axisLeft(yScale);
+
+
+        var xGroup= svg.append("g")
+             .attr("class","axis")
+             .attr("transform","translate(0,"+height+")")
+             .call(xAxis)
+             .append("text")
+             .attr("y","3em")
+             .attr("x",width/2)
+             .text("Democratic Margin(%)");
+
+        var yGroup= svg.append("g")
+             .attr("class","axis")
+             .attr("transform","translate("+width/2+","+"0)")
+             .call(yAxis)
+             .append("text")
+             .attr("y",30)
+             .attr("dy","-3.75em")
+             // .attr("x",width/2)
+             .style("text-anchor","end")
+             .text("Turnout(%)")
+
+        //add tootlip
+        var tooltip = d3.select("#formholder")
+                        .append("div")
+                        .style("position","absolute")
+                        .style("visibility","hidden")
+                        .attr("class","tootlip");
+
+        d3.select("#inds").on("change",function(){
+          var sel = document.getElementById("inds");
+          selection = sel.options[sel.selectedIndex].value;//sets a global
+
+          switch (selection) {
+            case "county":
+              renderCounties();
+              break;
+            case "state":
+              renderStates();
+              break;
+            default:
+          }
+        });
+
+    // get the data from a specify year
+        function getYearData(dataset, year) {
+          for (var i=0; i<dataset.length; i++) {
+            if (Number(dataset[i].key) === year) {
+              return dataset[i].values;
+            }
+          }
+        }
+
+        function copyObj(original) {
+          return JSON.parse(JSON.stringify(original));
+        }
+
+        var colorScale = d3.scaleLinear()
+        .domain([-50, 0, 50])
+        .range(["#B2182B","#B7B7B7","#2166AC"])
+        // .interpolate(d3.interpolateRgb);//interpolateRdYlBu
+
+
+        //end  for healper function
+
+        // handle search function
+        function reset(){
+          document.getElementById("myVal").value ='';// myVal is an input
+          handleClick();
+        }
+
+
+        // event :  this event is actually an object containnibg information about the action that just happened
+        //when you are interested in some event however, it's when you add an event listener to the element
+        //element.addEventListener(eventName,handler) evenmane is a string and it's the nane of the event you are interested in
+        //the handleer is simply a function which does something when event happens
+        //event is just a regular javascript object, with lots of properties on it.
+        function handleClick(){
+          currentSearch = document.getElementById("myVal").value;
+          // console.log("currrentSearch: ",currrentSearch);
+          // split function return an array of words, map( ) method creates a new array populated with the results if calling a provided function on every element in the calling array
+          var words= currentSearch.split(",").map(function(d){return d.trim()});
+
+          searchTerms= RegExp(words.join('|'),"g");// gi for case insensitive, g just for global
+          // console.log("result after the RegExp: ",searchTerms);
+          // console.log(selection);
+
+          d3.selectAll("circle").each(function(d){
+            var circle = d3.select(this);
+            // console.log(d);
+            // console.log(selection);
+            switch (selection) {
+              case 'county':
+                var field = d.county_name;
+                var count = d.county_num
+                break;
+              //
+              case 'state':
+                var field = d.state;
+                var count = d.num_state;
+                break;
+              default:
+
+            }
+
+
+            if ( (field.search(searchTerms) != -1) || (currentSearch == "") ) {   //(d.county.search(searchTerms) != -1)
+              circle.style('pointer-events', 'auto');
+              if(selection=='county'){
+                circle.attr("fill", colorScale(((d.dem_num-d.rep_num)/count)*100));
+              }else{
+                circle.attr("fill", colorScale(((d.num_dem-d.num_rep)/count)*100));
               }
+              circle.style("stroke-opacity", 1);
+            } else {
+              circle.style('pointer-events', 'none');
+              circle.attr("fill", "rgba(192,192,192,0.05)");
+              circle.style("stroke-opacity", 0);
+            }
 
-              var weburls = {
-                'county': 'https://raw.githubusercontent.com/psthomas/election-vis/master/US_County_Level_Presidential_Results_04-16.csv',
-                'state': 'https://raw.githubusercontent.com/psthomas/election-vis/master/US_State_Level_Presidential_Results_04-16.csv',
-                'demographic': 'https://raw.githubusercontent.com/psthomas/election-vis/master/US_Demographic_Presidential_Results_04-16.csv'
+          })
+          return false;
+        }
+
+
+        function renderCounties(){
+          if(cache.counties){
+            build(cache.counties);
+          }else{
+            d3.csv(urls.county).then(function(data){
+              data.forEach((d, i) => {
+                d.county_name = d.county_name+d.state;
+                d.id = d.fips_code;
+                d.dem_margin = d.dem_margin*100;
+              });
+
+              cache.counties = data;
+              console.log(data);
+              build(data);
+            });
+          }
+
+          // function parseRows(d) {
+          //   return {'county': d.county_name + ', ' + d.state, 'state': d.state, 'county_num': +d.county_num, 'turnout': +d.turnout,
+          //   'num_rep': +d.rep_num, 'num_dem': +d.dem_num, 'year': +d.year, 'state_electoral_votes': +d.state_electoral_votes,
+          //   'vap': +d.vap, 'id': +d.fips_code, 'dem_margin': +d.dem_margin*100};
+          // }
+          function tooltipOn(d){
+            tooltip.style("visibility", "visible")
+            .html( // br for line break
+              d.county_name + "<br>" +
+              "County: D: " + percentageFormat(d.dem_num/d.county_num) +
+              " R: " + percentageFormat(d.rep_num/d.county_num) + "<br>" +
+              "Turnout: " + percentageFormat(d.turnout) + "<br>" +
+              "Voters: " + thousandFormat(Math.round(d.county_num)) + "<br>" +
+              "State: D: " + percentageFormat(d.num_state_dem/d.num_state) +
+              " R: " + percentageFormat(d.num_state_rep/d.num_state) +  "<br>" );
+          }
+          //https://github.com/d3/d3-collection
+          //Nesting allows elements in an array to be grouped into a hierachical tree struture
+          //the resulting output is a tree rather than a flat table.
+          // the levels in the tree are specified by key functions
+          //an optional rollup function will collaspe the elements in each leaf node using a summery function
+          function build(data){
+            // console.log(data);
+            var stateData = d3.nest()
+                              .key(function(d){return d.year;})
+                              .key(function(d){return d.state;})// two keys two levels
+                              .rollup(function(v){// specifies a rollup function to be applied on each group of leaf elements
+                                return{
+                                  'num_state': d3.sum(v,function(d){return d.county_num;}),
+                                  'num_state_dem': d3.sum(v,function(d){return d.num_dem;}),
+                                  'num_state_rep': d3.sum(v,function(d){return d.num_rep;})
+                                };
+                              })
+                              .object(data);// applies the nest operator to the specified array, returning a nested object
+
+            data.forEach(function(d){
+              d.num_state = stateData[d.year][d.state]['num_state'],
+              d.num_state_dem = stateData[d.year][d.state]['num_state_dem'],
+              d.num_state_rep = stateData[d.year][d.state]['num_state_rep']
+            });
+
+
+            var dataset = d3.nest()
+                            .key(function(d){return +d.year;})
+                            .sortValues(function(a,b){return b.county_num-a.county_num;})
+                            .object(data);
+
+            var years = Object.keys(dataset).map(Number);
+            years.sort();
+            year = year ? year: 2016;
+            // console.log("year",year);
+            var yearData = copyObj(dataset[String(year)]);
+            // console.log("checkhere",dataset[String(year)]);
+            var rScale = d3.scaleLinear()
+                           .domain([0,d3.max(data,function(d){
+                             return Math.sqrt((d.county_num/Math.PI))
+                           })])
+                           .range([1,35]);
+
+            // console.log(stateData);// empty
+
+            function upclick() {
+              year += 4;
+              if (year > years[years.length - 1]) {
+                year = years[0]
               }
+              //Assign to new object, update circles:
+              yearData = copyObj(dataset[String(year)]);
+              // console.log("upclick",yearData);
+              update(yearData, year);
+            }
 
-              var urls = weburls;
-              //var urls = locurls;
-
-              //Formatting Functions
-              var pctFormat = d3.format(".2%");
-              var thsdFormat = d3.format(",");
-              function capitalize(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1);
+            function downclick() {
+              year -= 4;
+              if (year < years[0]) {
+                year = years[years.length - 1];
               }
+              yearData = copyObj(dataset[String(year)]);
+              update(yearData, year);
+            }
 
-              //Create SVG
-              var svg = d3.select("#svg_div").append("svg")
-              .attr("width", width + margin.left + margin.right)
-              .attr("height", height + margin.top + margin.bottom)
-              .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            d3.select('#upclick').on("click", upclick);
+            d3.select('#downclick').on("click", downclick);
 
-              //Year Title
-              var title = svg.append("text")
-              .attr("class", "title")
-              .attr("dy", height-10)
-              .attr("dx", ".35em");
+            let zoom = d3.zoom()
+                         .scaleExtent([.5,20])
+                         .extent([0,0],[width,height])
+                         .on("zoom",zoomed);
 
-              var demtext = svg.append("text")
-              .attr("class", "party")
-              .attr("dy", height-50)
-              .attr("dx", 243);
+             var circles = svg.selectAll("circle")
+             .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
 
-              var reptext = svg.append("text")
-              .attr("class", "party")
-              .attr("dy", height-14)
-              .attr("dx", 243);
+            // update the year data
+            // function updateScore(yearData) {
+            //
+            //   //Could get this data directly from dataframe,
+            //   //but want to calculate so can be updated easily on drag.
+            //   var sums = [0,0,0];
+            //   var electoral_sums = [[],0,0];
+            //
+            //   for (var i=0; i<yearData.length; i++) {
+            //     // console.log(yearData[i]);
+            //     sums[0] += yearData[i].dem_num;
+            //     sums[1] += yearData[i].rep_num;
+            //     sums[2] += yearData[i].county_num;
+            //     //Sum up electoral votes for each unique state
+            //   }
+            //   // console.log(sums[0]);
+            //
+            //   // console.log(yearData);
+            //   var states = [];
+            //
+            //   var stateYearData = yearData.filter( function(current) {
+            //     //console.log(current);
+            //     //return states.indexOf(current.state)
+            //     if (states.indexOf(current.state) === -1) {
+            //       states.push(current.state);
+            //       return true;
+            //     }
+            //     return false;
+            //   });
+            //
+            //
+            //   for (var i = 0; i<stateYearData.length; i++) {
+            //
+            //     var stateName = stateYearData[i].state;
+            //     var currentYear = stateYearData[i].year;
+            //
+            //     if (currentYear === 2016 && ['ME','NE'].indexOf(stateName) !== -1) {     //['ME','NE'].indexOf(stateName) !== -1  (stateName === 'ME' || stateName === 'NE')
+            //       //Handle split states
+            //       electoral_sums[1] += 1.5; // ME + NB
+            //       electoral_sums[2] += 3; // ME + NB
+            //       //electoral_sums[0].push(stateName === 'ME' ? 'NE' : 'ME'); //Make sure both states are added
+            //       //electoral_sums[0] = electoral_sums[0].concat(['ME','NE']);
+            //     } else if (currentYear === 2008 && stateName === 'NE' ) {
+            //       electoral_sums[1] += 1;
+            //       electoral_sums[2] += 4;
+            //
+            //     } else if (stateYearData[i].num_state_dem > stateYearData[i].num_state_rep ) {
+            //       //electoral_sums[1] is dems
+            //       console.log(stateYearData[i].state_electoral_votes);
+            //       electoral_sums[1] += parseInt(stateYearData[i].state_electoral_votes);
+            //     } else {
+            //       electoral_sums[2] += parseInt(stateYearData[i].state_electoral_votes);
+            //     }
+            //
+            //   }
+            //
+            //   var dfrac = sums[0]/sums[2],
+            //   rfrac = sums[1]/sums[2];
+            //
+            //   //update dfrac rfrac text, update color background
+            //   demtext.text('D ' + percentageFormat(dfrac) + ' ' + electoral_sums[1])
+            //   reptext.text('R ' + percentageFormat(rfrac) + ' ' + electoral_sums[2])
+            //
+            //
+            //   if (electoral_sums[1] > electoral_sums[2]) {
+            //     demtext.style('fill', '#bbb');
+            //     reptext.style('fill', null);
+            //   } else {
+            //     demtext.style('fill', null);
+            //     reptext.style('fill', '#bbb');
+            //   }
+            // }
 
-              //Define static scales
-              var xScale = d3.scaleLinear()
-              .domain([-100, 100])
-              .range([0, width]);
+            function update(yearData, year) {
 
-              var yScale = d3.scaleLinear()
-              .domain([0, 100])
-              .range([height, 0]);
+              var d_vote = [252,365,332,232]
+              var r_vote = [286,173,206,306]
+              var d_percent =[48.28,52.93,50.99,48.15]
+              var r_percent = [50.72,45.67,47.14,46.05]
+              var index = (year-2004)/4
 
-              //Base the color scale on the democratic margin.
-              var colorScale = d3.scaleLinear()
-              .domain([-50, 0, 50])
-              .range(["steelblue","brown"])
-              .interpolate(d3.interpolateRgb);
+              demtext.text('D ' + d_percent[index]+'%' + ' ' + d_vote[index])
+              reptext.text('D ' + r_percent[index]+'%' + ' ' + r_vote[index])
 
-              //Define x, y axes
-              var xAxis = d3.axisBottom(xScale);
-              var yAxis = d3.axisLeft(yScale);
+              //Update title
+              title.text(year);
 
-              //Append Axes
-              svg.append("g")
-              .attr("class", "axis")
-              .attr("transform", "translate(0," + height + ")")
-              .call(xAxis)
-              .append("text")
-              .attr("y", "3em")
-              .attr("x", width/2)
-              .text("Democratic Margin (%)");
+              var circles = svg.selectAll("circle")
+              .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
 
-              svg.append("g")
-              .attr("class", "axis")
-              .call(yAxis)
-              .attr("transform", "translate(" + (width/2) + ",0)")
-              .append("text")
-              .attr("transform", "rotate(-90)")
-              .attr("y", 6)
-              .attr("dy", "-3.75em")
-              .style("text-anchor", "end")
-              .text("Turnout (%VAP)");
+              circles.exit().remove();
 
-
-              //Statically place tooltip:
-              var tooltip = d3.select("#formholder")
-              .append("div")
-              .style("position", "absolute")
-              .style("visibility", "hidden")
-              .attr("class", "tooltip");
-              // .text("hello");
-              console.log(tooltip);
-
-              d3.select('#inds').on("change", function () {
-                var sel = document.getElementById("inds");
-                selection = sel.options[sel.selectedIndex].value;  //Sets a global
-
-                switch (selection) {
-                  case 'county':
-                  renderCounties();
-                  break;
-                  case 'state':
-                  renderStates();
-                  break;
-                  case 'race':
-                  renderDemographic('race');
-                  //Eventually renderDemographic('race');
-                  break;
-                  case 'gender':
-                  renderDemographic('gender');
-                  break;
-                  case 'age':
-                  renderDemographic('age');
-                  break;
-                  case 'education':
-                  renderDemographic('education');
-                  break;
+              circles.enter().append("circle")
+              .on("mouseover", tooltipOn) //Add tooltip before transition
+              .on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
+              // .call(drag)
+              .attr("class", "circle")
+              .merge(circles)
+              .transition()
+              .duration(1000) //750;  1000
+              .attr("cx", function(d) {
+                return xScale(((d.dem_num-d.rep_num)/d.county_num)*100);
+              })
+              .attr("cy", function(d) {
+                return yScale(d.turnout*100);
+              })
+              .attr("r", function(d) {
+                return rScale(Math.sqrt(d.county_num/Math.PI));
+              })
+              .attr("fill",function(d){
+                if (d.county_name.search(searchTerms) != -1) {
+                  return colorScale(((d.dem_num-d.rep_num)/d.county_num)*100);
+                }else {
+                  return "rgba(192,192,192,0.05)";
                 }
               });
 
 
-              // Helper functions:
-              function getYearData(dataset, year) {
-                for (var i=0; i<dataset.length; i++) {
-                  if (Number(dataset[i].key) === year) {
-                    return dataset[i].values;
-                  }
+            }
+            function initialize(yearData, year) {
+              //Update title
+              title.text(year);
+              var index = (year-2004)/4
+
+              demtext.text('D ' + d_percent[index]+'%' + ' ' + d_vote[index])
+              reptext.text('R ' + r_percent[index]+'%' + ' ' + r_vote[index])
+
+              var circles = svg.selectAll("circle")
+              .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
+              //
+              circles.exit().remove();
+
+              //Create any new circlesd
+              circles.enter().append("circle")
+              .attr("class", "circle")
+              .attr("cx", function(d) {
+                return xScale(((d.dem_num-d.rep_num)/d.county_num)*100);
+              })
+              .attr("cy", function(d) {
+                return yScale(d.turnout*100);
+              })
+              .attr("r", function(d) {
+                return rScale(Math.sqrt(d.county_num/Math.PI));
+              })
+              .attr("fill",function(d){
+                // console.log(d);
+                if (d.county_name.search(searchTerms) != -1) {
+                  return colorScale(((d.dem_num-d.rep_num)/d.county_num)*100);
+                }else {
+                  return "rgba(192,192,192,0.05)";
                 }
+              })
+              .call(zoom)
+              .on("mouseover", tooltipOn)
+              .on("mouseout", function(d){return tooltip.style("visibility", "hidden");});
+
+            }
+            //Initialize scatterplot
+            initialize(yearData, year);
+            //update(yearData, year);  //Works, but transition is weird.
+
+            function zoomed(){
+              let newXScale = d3.event.transform.rescaleX(xScale)
+              let newYScale = d3.event.transform.rescaleY(yScale)
+
+              xAxis.scale(newXScale);
+              xGroup.call(xAxis);
+              yAxis.scale(newYScale);
+              yGroup.call(yAxis);
+
+                circles.data(yearData).attr('cx',function(d){return newXScale(d.x)})
+                     .attr('cy',function(d){return newYScale(d.y)})
+
+            }// end for zoomed
+
+          }//end for build data
+
+        }//end for renderCouties
+
+//___________________render states ___________________________________________________________________________
+        function renderStates(){
+          if(cache.states){
+            build(cache.states)
+          }else{
+            d3.csv(urls.state).then(function(data){
+              data.forEach((d, i) => {
+                d.id = d.state
+                d.turnout = d.num_state/d.vap
+              });
+
+              cache.states = data;
+              build(data);
+            });
+          }
+
+        function tooltipOn(d){
+          tooltip.style("visibility", "visible")
+          .html( // br for line break
+            "State: "+d.state + "<br>" +
+            "D: " + percentageFormat(d.num_dem/d.num_state) +
+            " R: " + percentageFormat(d.num_rep/d.num_state) + "<br>" +
+            "Turnout: " + percentageFormat(d.turnout) + "<br>" +
+            "Voters: " + thousandFormat(Math.round(d.num_state)) + "<br>"  );
+        }
+
+        function build(data) {
+          var circles;
+          var dataset = d3.nest()
+          .key(function(d) { return +d.year; })
+          .sortValues(function(a,b) { return b.num_state - a.num_state; } )  //Bring smallest to front
+          .object(data);
+          //.entries(data);
+
+
+          var years = Object.keys(dataset).map(Number);
+          years.sort()
+          //var year = years[0];
+          year = year ? year : years[0];
+
+          //Create a copy, so it can be edited on drag:
+          var yearData = copyObj(dataset[String(year)]);
+
+          //Data is just array of all objects from csv, used to find max of all years
+          var rScale = d3.scaleLinear()
+          .domain([0, d3.max(data, function(d) {return Math.sqrt(d.num_state/Math.PI); })])  //Area proportional to votes
+          .range([1, 35]);  //2,60  2, 30
+
+          function upclick() {
+            year += 4;
+            if (year > years[years.length - 1]) {
+              year = years[0]
+            }
+            //Assign to new object, update circles:
+            getYearData(dataset, year);
+            //yearData = Object.assign([], getYearData(dataset, year));
+            yearData = copyObj(dataset[String(year)]);
+            // console.log("upclick",yearData);
+            update(yearData, year);
+          }
+
+          function downclick() {
+            year -= 4;
+            if (year < years[0]) {
+              year = years[years.length - 1];
+            }
+            // console.log("downclick",yearData);
+            yearData = copyObj(dataset[String(year)]);
+            update(yearData, year);
+          }
+
+          d3.select('#upclick').on("click", upclick);
+          d3.select('#downclick').on("click", downclick);
+          let zoom = d3.zoom()
+                       .scaleExtent([.5,20])
+                       .extent([0,0],[width,height])
+                       .on("zoom",zoomed);
+
+          function update(yearData, year) {
+
+
+            var index = (year-2004)/4
+
+            .text('D ' + d_percent[index]+'%' + ' ' + d_vote[index])
+            reptext.text('R ' + r_percent[index]+'%' + ' ' + r_vote[index])
+
+            //Update title
+            title.text(year);
+            // the update process- enter() update exit( )
+            //the basic principle follows 4 Stephens
+            //1. defined group and join the data 2 exit, remove to get rid of any redundant DOM newelements
+            //enter. append new DOM elements and then mergen the DOM elements
+
+            var circles = svg.selectAll("circle")
+            .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
+
+            circles.exit().remove();
+
+            circles.enter().append("circle")
+            .on("mouseover", tooltipOn) //Add tooltip before transition
+            .on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
+            .attr("class", "circle")
+            .merge(circles)
+            .transition()
+            .duration(1000) //750;  1000
+            .attr("cx", function(d) {
+              return xScale(((d.num_dem-d.num_rep)/d.num_state)*100);
+            })
+            .attr("cy", function(d) {
+              return yScale(d.turnout*100);
+            })
+            .attr("r", function(d) {
+              return rScale(Math.sqrt(d.num_state/Math.PI));
+            })
+            .attr("fill",function(d){
+              if (d.state.search(searchTerms) != -1) {
+                return colorScale(((d.num_dem-d.num_rep)/d.num_state)*100);
+              }else {
+                return "rgba(192,192,192,0.05)";
               }
+            });
 
-              function copyObj(original) {
-                return JSON.parse(JSON.stringify(original));
+
+          }//end for update
+
+          function initialize(yearData, year) {
+
+            // console.log(yearData);
+            // console.log(year)
+
+            var index = (year-2004)/4
+
+            demtext.text('D ' + d_percent[index]+'%' + ' ' + d_vote[index])
+            reptext.text('D ' + r_percent[index]+'%' + ' ' + r_vote[index])
+
+            //Update title
+            title.text(year);
+
+            circles = svg.selectAll("circle")
+            .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
+
+            circles.exit().remove(); //.transition().duration(100);
+
+            //Create any new circles
+            circles.enter().append("circle")
+            .attr("class", "circle")
+            .attr("cx", function(d) {
+              return xScale(((d.num_dem-d.num_rep)/d.num_state)*100);
+            })
+            .attr("cy", function(d) {
+              // console.log(d);
+              return yScale(d.turnout*100);
+            })
+            .attr("r", function(d) {
+              //return rScale(Math.sqrt(d.num_state/Math.PI));
+              return rScale(Math.sqrt(d.num_state/Math.PI));
+            })
+            .attr("fill",function(d){
+              if (d.state.search(searchTerms) != -1) {
+                return colorScale(((d.num_dem-d.num_rep)/d.num_state)*100);
+              }else {
+                return "rgba(192,192,192,0.05)";
               }
+            })
+            // .call(zoom)
+            .on("mouseover", tooltipOn)
+            .on("mouseout", function(d){return tooltip.style("visibility", "hidden")  ;});
 
+          }// end for initialize
 
-              // d3.select('#searchform').onSubmit( function() {
-              // 	handleClick();
-              // 	return false;
-              // });
 
-              function reset() {
-                document.getElementById("myVal").value= '';
-                handleClick();
-              }
+          //Initialize scatterplot
+          initialize(yearData, year);
+          // var ci = d3.selectAll("circle");
+          // console.log(ci);
+          svg.call(zoom);
+          //update(yearData, year);  //Works, but transition is weird.
 
-              function handleClick(event){
-                currentSearch = document.getElementById("myVal").value;
+          function zoomed(){
+            let newXScale = d3.event.transform.rescaleX(xScale)
+            let newYScale = d3.event.transform.rescaleY(yScale)
 
-                var words = currentSearch.split(",").map(function(s) { return s.trim() });
+            xAxis.scale(newXScale);
+            xGroup.call(xAxis);
+            yAxis.scale(newYScale);
+            yGroup.call(yAxis);
 
-                //Modifies global search variable, also used in update()
-                searchTerms = RegExp(words.join('|'), "g");  //gi is case insensitive global, g is just global
+            // join.merge(newelements)
+            //     .attr("cx", d=>newXScale(+d.wight))
+            //     .attr("cy",d=>newYScale(+d.height))
+            circles.data(yearData,function(d) { return d.id ; })
+                   .attr('cx',function(d){return newXScale(d.x)})
+                   .attr('cy',function(d){return newYScale(d.y)})
 
-                //svg.selectAll
-                d3.selectAll("circle").each(function(d) {
-                  var circle = d3.select(this);
+          }// end for zoomed
 
-                  switch (selection) {
-                    case 'county':
-                    var field = d.county;
-                    var count = d.county_num;
-                    break;
-                    case 'state':
-                    var field = d.state;
-                    var count = d.num_state;
-                    break;
-                    case 'race':
-                    case 'gender':
-                    case 'age':
-                    case 'education':
-                    var field = d.group;
-                    var count = d.num_group;
-                    break;
-                  }
+        } // end for build function
 
-                  if ( (field.search(searchTerms) != -1) || (currentSearch == "") ) {   //(d.county.search(searchTerms) != -1)
-                    circle.style('pointer-events', 'auto');
-                    circle.attr("fill", colorScale(((d.num_dem-d.num_rep)/count)*100));
-                    circle.style("stroke-opacity", 1);
-                  } else {
-                    circle.style('pointer-events', 'none');
-                    circle.attr("fill", "rgba(192,192,192,0.05)");
-                    circle.style("stroke-opacity", 0);
-                  }
+        }//end of render states
 
-                });
 
-                return false; //Don't reload page
-              }
 
 
-              function renderCounties() {
+        renderCounties();
 
-                if (cache.counties) {
-                  build(cache.counties);
-                } else {
-                  d3.csv(urls.county, parseRows, function(error, data) {
-                    if (error) {throw error};
-                    //Update cache:
-                    cache.counties = data;
-                    build(data);
-                  });
-                }
 
-                function parseRows(d) {
-                  return {'county': d.county_name + ', ' + d.state, 'state': d.state, 'county_num': +d.county_num, 'turnout': +d.turnout,
-                  'num_rep': +d.rep_num, 'num_dem': +d.dem_num, 'year': +d.year, 'state_electoral_votes': +d.state_electoral_votes,
-                  'vap': +d.vap, 'id': +d.fips_code, 'dem_margin': +d.dem_margin*100};
-                }
 
-                function tooltipOn(d) {
-
-                  tooltip.style("visibility", "visible")
-                  .html(
-                    d.county + "<br>" +
-                    "County: D: " + pctFormat(d.num_dem/d.county_num) +
-                    " R: " + pctFormat(d.num_rep/d.county_num) + "<br>" +
-                    "Turnout: " + pctFormat(d.turnout) + "<br>" +
-                    "Voters: " + thsdFormat(Math.round(d.county_num)) + "<br>" +
-                    "State: D: " + pctFormat(d.num_state_dem/d.num_state) +
-                    " R: " + pctFormat(d.num_state_rep/d.num_state) +  "<br>" );
-                  }
-
-
-                  function build(data) {
-
-                    // Build state data sums
-                    var stateData = d3.nest()
-                    .key(function(d) { return d.year; })
-                    .key(function(d) { return d.state; })
-                    .rollup(function(v) { return {
-                      'num_state': d3.sum(v, function(d) { return d.county_num; }),
-                      'num_state_dem': d3.sum(v, function(d) { return d.num_dem; }),
-                      'num_state_rep': d3.sum(v, function(d) { return d.num_rep; }),
-                    }; })
-                    .object(data);
-
-                    // Add the state level data to each county object
-                    data.forEach(function(d) {
-                      d.num_state = stateData[d.year][d.state]['num_state'],
-                      d.num_state_dem = stateData[d.year][d.state]['num_state_dem'],
-                      d.num_state_rep = stateData[d.year][d.state]['num_state_rep']
-                    });
-
-                    var dataset = d3.nest()
-                    .key(function(d) { return +d.year; })
-                    .sortValues(function(a,b) { return b.county_num - a.county_num; } )  //Bring smallest to front
-                    .object(data);
-                    //.entries(data);
-
-
-                    var years = Object.keys(dataset).map(Number);
-                    years.sort()
-                    year = year ? year : years[0];
-
-                    //Create a copy, so it can be edited on drag:
-                    //var yearData = Object.assign([], getYearData(dataset, year));
-                    //var yearData = copyObj(getYearData(dataset, year));
-                    var yearData = copyObj(dataset[String(year)]);
-
-                    //Data is just array of all objects from csv, used to find max of all years
-                    var rScale = d3.scaleLinear()
-                    .domain([0, d3.max(data, function(d) {return Math.sqrt(d.county_num/Math.PI); })])  //Area proportional to votes
-                    .range([1, 35]);  //2,60  2, 30
-
-                    var rScale_electoral = d3.scaleLinear()
-                    .domain([0, d3.max(data, function(d) {
-                      return Math.sqrt((d.county_num/d.num_state)*d.state_electoral_votes/Math.PI);  //Area proportional to electoral votes
-                    })])
-                    .range([1, 35]);
-
-                    var rScale_vpi = d3.scaleLinear()
-                    .domain([0, d3.max(data, function(d) {
-                      var county_vpi = (d.county_num/d.num_state) * (d.state_electoral_votes/(Math.abs(d.num_state_dem-d.num_state_rep)));
-                      // Using VAP instead
-                      //var county_vpi = (d.vap/d.num_state) * (d.state_electoral_votes/(Math.abs(d.num_state_dem-d.num_state_rep)));
-                      return Math.sqrt(county_vpi/Math.PI);   //Area proportional to VPI
-                    })])
-                    .range([1, 35]);  //2,60  2, 30
-
-                    function upclick() {
-                      year += 4;
-                      if (year > years[years.length - 1]) {
-                        year = years[0]
-                      }
-                      //Assign to new object, update circles:
-                      getYearData(dataset, year);
-                      //yearData = Object.assign([], getYearData(dataset, year));
-                      yearData = copyObj(dataset[String(year)]);
-                      update(yearData, year);
-                    }
-
-                    function downclick() {
-                      year -= 4;
-                      if (year < years[0]) {
-                        year = years[years.length - 1];
-                      }
-                      //Assign to new object, update:
-                      //yearData = Object.assign([], getYearData(dataset, year));
-                      //yearData = copyObj(getYearData(dataset, year));
-                      yearData = copyObj(dataset[String(year)]);
-                      update(yearData, year);
-                    }
-
-                    d3.select('#upclick').on("click", upclick);
-                    d3.select('#downclick').on("click", downclick);
-
-
-                    function getRadioScaled(d) {
-
-                      var checked = document.querySelector('input[name="area"]:checked').value;
-
-                      if (checked === "electoral") {
-                        return rScale_electoral(Math.sqrt((d.county_num/d.num_state)*d.state_electoral_votes/Math.PI));
-                        // d.county_num Math.pow(d.county_num, 0.6)  Math.sqrt(d.county_num/Math.PI)  Math.sqrt(d *4/Math.PI)
-                      } else if (checked === "vpi") {
-                        //voter power index:
-                        //http://www.dailykos.com/story/2016/12/19/1612252/-Voter-Power-Index-Just
-                        //-How-Much-Does-the-Electoral-College-Distort-the-Value-of-Your-Vote
-                        // Using county_num
-                        var county_vpi = (d.county_num/d.num_state) * (d.state_electoral_votes/(Math.abs(d.num_state_dem-d.num_state_rep)));
-                        // using VAP:
-                        //var county_vpi = (d.vap/d.num_state) * (d.state_electoral_votes/(Math.abs(d.num_state_dem-d.num_state_rep)));
-                        return rScale_vpi(Math.sqrt(county_vpi/Math.PI));
-
-                      } else {
-                        //Area proportional to number of voters
-                        return rScale(Math.sqrt(d.county_num/Math.PI));
-                      }
-
-                    }
-
-                    function updateAreas(event){
-
-                      d3.selectAll("circle").transition()
-                      .duration(1000) //750;
-                      .attr("r", function(d) {
-                        return getRadioScaled(d);
-                      });
-
-                    }
-
-                    d3.select("#areaform")
-                    .on("click", function () {
-                      return updateAreas();
-                    });
-
-                    //Dragging behavior
-                    //https://bl.ocks.org/mbostock/6123708
-                    var drag = d3.drag()
-                    .on("drag", dragged)
-                    .on("end", ended);
-
-
-                    function dragged(d) {
-                      //Remove transitions temporarily
-                      d3.selectAll("circle").transition();
-
-                      //Issue when dragged across 0 threshold, county_num = 0
-                      if (d3.event.y >= height) {
-                        return;
-                      }
-
-                      //Relocate circle with mouse
-                      d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-
-                      //Avoid case of no shift
-                      if (d.x === undefined || d.y === undefined) {
-                        return;
-                      }
-
-
-                      var newMargin = xScale.invert(d.x)/100,
-                      newTurnout = yScale.invert(d.y)/100,  //Math.abs()  d.y
-                      oldTurnout = d.turnout,
-                      oldMargin = (d.num_dem-d.num_rep)/d.county_num,
-                      marginChange = newMargin-oldMargin,
-                      oldDfrac = d.num_dem/d.county_num,
-                      oldRfrac = d.num_rep/d.county_num,
-                      oldNumDem = d.num_dem,
-                      oldNumRep = d.num_rep;
-
-                      //Recalculate fractions based on margin change
-                      //Half goes to each side, zero sum
-                      dfrac = oldDfrac + marginChange/2;
-                      rfrac = oldRfrac - marginChange/2;
-
-                      //Add increses in turnout to county_num
-                      d.county_num = newTurnout*d.vap;
-
-                      // Recalculate based on margin change first, assumes
-                      // margin changes are zero sum between parties.
-                      d.num_dem = dfrac*d.county_num;
-                      d.num_rep = rfrac*d.county_num;
-                      d.turnout =  newTurnout;
-
-                      //Change state level data
-                      d.num_state += (newTurnout - oldTurnout)*d.vap  //Multiply turnout change times County Voting Age population
-                      d.num_state_dem += d.num_dem - oldNumDem;  //Update state dem and rep counts
-                      d.num_state_rep += d.num_rep - oldNumRep;
-
-                      //Call the tooltip function each time to update.
-                      tooltipOn(d);
-
-                      //Update all other counties in state
-                      for (var i = 0; i<yearData.length; i++) {
-                        if (yearData[i].state === d.state) {
-                          yearData[i].num_state = d.num_state;
-                          yearData[i].num_state_dem = d.num_state_dem;
-                          yearData[i].num_state_rep = d.num_state_rep;
-                        }
-                      }
-
-                      //Update score as well:
-                      updateScore(yearData);
-                    }
-
-                    function ended(d) {
-
-                      // Modify the yeardata, then call update(yearData, d.year);
-                      for (var i = 0; i<yearData.length; i++) {
-                        if (yearData[i].state === d.state) {
-                          yearData[i].num_state = d.num_state;
-                          yearData[i].num_state_dem = d.num_state_dem;
-                          yearData[i].num_state_rep = d.num_state_rep;
-                        }
-                      }
-                      update(yearData, d.year);
-
-                    }
-
-                    function updateScore(yearData) {
-
-                      //Could get this data directly from dataframe,
-                      //but want to calculate so can be updated easily on drag.
-                      var sums = [0,0,0];
-                      var electoral_sums = [[],0,0];
-
-
-                      for (var i=0; i<yearData.length; i++) {
-                        sums[0] += yearData[i].num_dem;
-                        sums[1] += yearData[i].num_rep;
-                        sums[2] += yearData[i].county_num;
-                        //Sum up electoral votes for each unique state
-
-                      }
-
-                      // console.log(yearData);
-                      var states = [];
-
-                      var stateYearData = yearData.filter( function(current) {
-                        //console.log(current);
-                        //return states.indexOf(current.state)
-                        if (states.indexOf(current.state) === -1) {
-                          states.push(current.state);
-                          return true;
-                        }
-                        return false;
-                      });
-
-
-                      for (var i = 0; i<stateYearData.length; i++) {
-
-                        var stateName = stateYearData[i].state;
-                        var currentYear = stateYearData[i].year;
-
-                        if (currentYear === 2016 && ['ME','NE'].indexOf(stateName) !== -1) {     //['ME','NE'].indexOf(stateName) !== -1  (stateName === 'ME' || stateName === 'NE')
-                          //console.log('entered');
-                          //Handle split states
-                          // electoral_sums[1] += 3; // ME + NB
-                          // electoral_sums[2] += 6; // ME + NB
-                          //Will be entered twice, so give 1.5, 3 each entrance instead:
-                          electoral_sums[1] += 1.5; // ME + NB
-                          electoral_sums[2] += 3; // ME + NB
-                          //electoral_sums[0].push(stateName === 'ME' ? 'NE' : 'ME'); //Make sure both states are added
-                          //electoral_sums[0] = electoral_sums[0].concat(['ME','NE']);
-                        } else if (currentYear === 2008 && stateName === 'NE' ) {
-                          electoral_sums[1] += 1;
-                          electoral_sums[2] += 4;
-
-                        } else if (stateYearData[i].num_state_dem > stateYearData[i].num_state_rep ) {
-                          //electoral_sums[1] is dems
-                          electoral_sums[1] += stateYearData[i].state_electoral_votes;
-                        } else {
-                          electoral_sums[2] += stateYearData[i].state_electoral_votes;
-                        }
-
-                      }
-
-
-                      var dfrac = sums[0]/sums[2],
-                      rfrac = sums[1]/sums[2];
-
-                      //update dfrac rfrac text, update color background
-                      demtext.text('D ' + pctFormat(dfrac) + ' ' + electoral_sums[1])
-                      reptext.text('R ' + pctFormat(rfrac) + ' ' + electoral_sums[2])
-
-
-                      if (electoral_sums[1] > electoral_sums[2]) {
-                        demtext.style('fill', '#bbb');
-                        reptext.style('fill', null);
-                      } else {
-                        demtext.style('fill', null);
-                        reptext.style('fill', '#bbb');
-                      }
-
-                      //Optional, set background color based on winner
-                      // var backColor = dfrac > rfrac ? colorScale(5) : colorScale(-5);
-                      // //var backColor = colorScale((dfrac-rfrac)*100);
-                      // d3.selectAll('svg')
-                      // 	.style('background-color', backColor);
-                    }
-
-                    function update(yearData, year) {
-
-                      //Change D,R scores:
-                      updateScore(yearData);
-
-                      //Update title
-                      title.text(year);
-
-                      var circles = svg.selectAll("circle")
-                      .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
-
-                      circles.exit().remove();
-
-                      circles.enter().append("circle")
-                      .on("mouseover", tooltipOn) //Add tooltip before transition
-                      .on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
-                      .call(drag)
-                      .attr("class", "circle")
-                      .merge(circles)
-                      .transition()
-                      .duration(1000) //750;  1000
-                      .attr("cx", function(d) {
-                        return xScale(((d.num_dem-d.num_rep)/d.county_num)*100);
-                      })
-                      .attr("cy", function(d) {
-                        return yScale(d.turnout*100);
-                      })
-                      .attr("r", function(d) {
-                        return getRadioScaled(d);
-                      })
-                      .attr("fill",function(d){
-                        if (d.county.search(searchTerms) != -1) {
-                          return colorScale(((d.num_dem-d.num_rep)/d.county_num)*100);
-                        }else {
-                          return "rgba(192,192,192,0.05)";
-                        }
-                      });
-
-
-                    }
-
-                    function initialize(yearData, year) {
-
-                      //Change D,R scores:
-                      updateScore(yearData);
-
-                      //Update title
-                      title.text(year);
-
-                      var circles = svg.selectAll("circle")
-                      .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
-
-                      circles.exit().remove();
-
-                      //Create any new circles
-                      circles.enter().append("circle")
-                      .attr("class", "circle")
-                      .attr("cx", function(d) {
-                        return xScale(((d.num_dem-d.num_rep)/d.county_num)*100);
-                      })
-                      .attr("cy", function(d) {
-                        return yScale(d.turnout*100);
-                      })
-                      .attr("r", function(d) {
-                        //return rScale(Math.sqrt(d.county_num/Math.PI));
-                        return getRadioScaled(d);
-                      })
-                      .attr("fill",function(d){
-                        if (d.county.search(searchTerms) != -1) {
-                          return colorScale(((d.num_dem-d.num_rep)/d.county_num)*100);
-                        }else {
-                          return "rgba(192,192,192,0.05)";
-                        }
-                      })
-                      .call(drag)
-                      .on("mouseover", tooltipOn)
-                      .on("mouseout", function(d){return tooltip.style("visibility", "hidden");});
-
-                    }
-
-
-                    //Initialize scatterplot
-                    initialize(yearData, year);
-                    //update(yearData, year);  //Works, but transition is weird.
-
-                  } //);
-                }
-
-
-                function renderStates() {
-
-                  if (cache.states) {
-                    build(cache.states);
-                  } else {
-                    d3.csv(urls.state, parseRows, function(error, data) {
-                      if (error) {throw error};
-                      //Update cache:
-                      cache.states = data;
-                      build(data);
-                    });
-                  }
-
-
-                  function tooltipOn(d) {
-                    tooltip.style("visibility", "visible")
-                    .html(
-                      "State: " + d.state + "<br>" +
-                      " D: " + pctFormat(d.num_dem/d.num_state) +
-                      " R: " + pctFormat(d.num_rep/d.num_state) + "<br>" +
-                      "Turnout: " + pctFormat(d.turnout) + "<br>" +
-                      "Voters: " + thsdFormat(Math.round(d.num_state)) + "<br>")
-                    }
-
-
-                    function parseRows(d) {
-                      return {'state': d.state, 'id': d.state, 'num_state': +d.state_num, 'turnout': +d.state_num/+d.vap,
-                      'num_rep': +d.rep_num, 'num_dem': +d.dem_num, 'year': +d.year, 'state_electoral_votes': +d.state_electoral_votes,
-                      'vap': +d.vap, 'dem_margin': (+d.dem_num - +d.rep_num) / +d.state_num};
-                    }
-
-
-                    function build(data) {
-
-                      var dataset = d3.nest()
-                      .key(function(d) { return +d.year; })
-                      .sortValues(function(a,b) { return b.num_state - a.num_state; } )  //Bring smallest to front
-                      .object(data);
-                      //.entries(data);
-
-
-                      var years = Object.keys(dataset).map(Number);
-                      years.sort()
-                      //var year = years[0];
-                      year = year ? year : years[0];
-
-                      //Create a copy, so it can be edited on drag:
-                      var yearData = copyObj(dataset[String(year)]);
-
-                      //Data is just array of all objects from csv, used to find max of all years
-                      var rScale = d3.scaleLinear()
-                      .domain([0, d3.max(data, function(d) {return Math.sqrt(d.num_state/Math.PI); })])  //Area proportional to votes
-                      .range([1, 35]);  //2,60  2, 30
-
-                      var rScale_electoral = d3.scaleLinear()
-                      .domain([0, d3.max(data, function(d) {
-                        return Math.sqrt(d.state_electoral_votes/Math.PI);  //Area proportional to electoral votes
-                      })])
-                      .range([1, 35]);
-
-                      var rScale_vpi = d3.scaleLinear()
-                      .domain([0, d3.max(data, function(d) {
-                        var county_vpi = d.state_electoral_votes/(Math.abs(d.num_dem-d.num_rep));
-                        // Using VAP instead
-                        //var county_vpi = (d.vap/d.num_state) * (d.state_electoral_votes/(Math.abs(d.num_state_dem-d.num_state_rep)));
-                        return Math.sqrt(county_vpi/Math.PI);   //Area proportional to VPI
-                      })])
-                      .range([1, 35]);  //2,60  2, 30
-
-                      function upclick() {
-                        year += 4;
-                        if (year > years[years.length - 1]) {
-                          year = years[0]
-                        }
-                        //Assign to new object, update circles:
-                        getYearData(dataset, year);
-                        //yearData = Object.assign([], getYearData(dataset, year));
-                        yearData = copyObj(dataset[String(year)]);
-                        update(yearData, year);
-                      }
-
-                      function downclick() {
-                        year -= 4;
-                        if (year < years[0]) {
-                          year = years[years.length - 1];
-                        }
-                        //Assign to new object, update:
-                        //yearData = Object.assign([], getYearData(dataset, year));
-                        //yearData = copyObj(getYearData(dataset, year));
-                        yearData = copyObj(dataset[String(year)]);
-                        update(yearData, year);
-                      }
-
-                      d3.select('#upclick').on("click", upclick);
-                      d3.select('#downclick').on("click", downclick);
-
-                      function getRadioScaled(d) {
-
-                        var checked = document.querySelector('input[name="area"]:checked').value;
-
-                        if (checked === "electoral") {
-                          return rScale_electoral(Math.sqrt(d.state_electoral_votes/Math.PI));
-                          // d.county_num Math.pow(d.county_num, 0.6)  Math.sqrt(d.county_num/Math.PI)  Math.sqrt(d *4/Math.PI)
-                        } else if (checked === "vpi") {
-                          //voter power index:
-                          //http://www.dailykos.com/story/2016/12/19/1612252/-Voter-Power-Index-Just
-                          //-How-Much-Does-the-Electoral-College-Distort-the-Value-of-Your-Vote
-                          // Using county_num
-                          var county_vpi = d.state_electoral_votes/(Math.abs(d.num_dem-d.num_rep));
-                          // using VAP:
-                          //var county_vpi = (d.vap/d.num_state) * (d.state_electoral_votes/(Math.abs(d.num_state_dem-d.num_state_rep)));
-                          return rScale_vpi(Math.sqrt(county_vpi/Math.PI));
-
-                        } else {
-                          //Area proportional to number of voters
-                          return rScale(Math.sqrt(d.num_state/Math.PI));
-                        }
-
-                      }
-
-                      function updateAreas(event){
-
-                        d3.selectAll("circle").transition()
-                        .duration(1000) //750;
-                        .attr("r", function(d) {
-                          return getRadioScaled(d);
-                        });
-
-                      }
-
-                      d3.select("#areaform")
-                      .on("click", function () {
-                        return updateAreas();
-                      });
-
-
-                      //Dragging behavior
-                      //https://bl.ocks.org/mbostock/6123708
-                      var drag = d3.drag()
-                      .on("drag", dragged)
-                      .on("end", ended);
-
-
-                      function dragged(d) {
-                        //Remove transitions temporarily
-                        d3.selectAll("circle").transition();
-
-                        //Issue when dragged across 0 threshold, county_num = 0
-                        if (d3.event.y >= height) {
-                          return;
-                        }
-
-                        //Relocate circle with mouse
-                        d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-
-                        //Avoid case of no shift
-                        if (d.x === undefined || d.y === undefined) {
-                          return;
-                        }
-
-
-                        var newMargin = xScale.invert(d.x)/100,
-                        newTurnout = yScale.invert(d.y)/100,  //Math.abs()  d.y
-                        oldTurnout = d.turnout,
-                        oldMargin = (d.num_dem-d.num_rep)/d.num_state,
-                        marginChange = newMargin-oldMargin,
-                        oldDfrac = d.num_dem/d.num_state,
-                        oldRfrac = d.num_rep/d.num_state,
-                        oldNumDem = d.num_dem,
-                        oldNumRep = d.num_rep;
-
-                        //Recalculate fractions based on margin change
-                        //Half goes to each side, zero sum
-                        dfrac = oldDfrac + marginChange/2;
-                        rfrac = oldRfrac - marginChange/2;
-
-                        //Add increses in turnout to county_num
-                        d.num_state = newTurnout*d.vap;
-
-                        // Recalculate based on margin change first, assumes
-                        // margin changes are zero sum between parties.
-                        d.num_dem = dfrac*d.num_state;
-                        d.num_rep = rfrac*d.num_state;
-                        d.turnout =  newTurnout;
-
-
-                        //Call the tooltip function each time to update.
-                        tooltipOn(d);
-
-                        //Update score as well:
-                        updateScore(yearData);
-                      }
-
-                      function ended(d) {
-
-                        //No longer needed, as this is at state level?:
-
-                        // Modify the yeardata, then call update(yearData, d.year);
-                        for (var i = 0; i<yearData.length; i++) {
-                          if (yearData[i].state === d.state) {
-                            yearData[i].num_state = d.num_state;
-                          }
-                        }
-                        update(yearData, d.year);
-
-
-                      }
-
-                      function updateScore(yearData) {
-
-                        //Could get this data directly from dataframe,
-                        //but want to calculate so can be updated easily on drag.
-                        var sums = [0,0,0];
-                        var electoral_sums = [[],0,0];
-
-
-                        for (var i=0; i<yearData.length; i++) {
-                          sums[0] += yearData[i].num_dem;
-                          sums[1] += yearData[i].num_rep;
-                          sums[2] += yearData[i].num_state;
-                          //Sum up electoral votes for each unique state
-
-                        }
-
-
-                        for (var i = 0; i<yearData.length; i++) {
-
-                          var stateName = yearData[i].state;
-                          var currentYear = yearData[i].year;
-                          //console.log('currentYear')
-
-                          if (currentYear === 2016 && ['ME','NE'].indexOf(stateName) !== -1) {     //['ME','NE'].indexOf(stateName) !== -1  (stateName === 'ME' || stateName === 'NE')
-                            //Handle split states
-                            // electoral_sums[1] += 3; // ME + NB
-                            // electoral_sums[2] += 6; // ME + NB
-                            //Will be entered twice, so give 1.5, 3 each entrance instead:
-                            electoral_sums[1] += 1.5; // ME + NB
-                            electoral_sums[2] += 3; // ME + NB
-                            //electoral_sums[0].push(stateName === 'ME' ? 'NE' : 'ME'); //Make sure both states are added
-                            //electoral_sums[0] = electoral_sums[0].concat(['ME','NE']);
-                          } else if (currentYear === 2008 && stateName === 'NE' ) {
-                            electoral_sums[1] += 1;
-                            electoral_sums[2] += 4;
-
-                          } else if (yearData[i].num_dem > yearData[i].num_rep ) {
-                            //electoral_sums[1] is dems
-                            electoral_sums[1] += yearData[i].state_electoral_votes;
-                          } else {
-                            electoral_sums[2] += yearData[i].state_electoral_votes;
-                          }
-
-                        }
-
-
-                        var dfrac = sums[0]/sums[2],
-                        rfrac = sums[1]/sums[2];
-
-                        //update dfrac rfrac text, update color background
-                        demtext.text('D ' + pctFormat(dfrac) + ' ' + electoral_sums[1])
-                        reptext.text('R ' + pctFormat(rfrac) + ' ' + electoral_sums[2])
-
-
-                        if (electoral_sums[1] > electoral_sums[2]) {
-                          demtext.style('fill', '#bbb');
-                          reptext.style('fill', null);
-                        } else {
-                          demtext.style('fill', null);
-                          reptext.style('fill', '#bbb');
-                        }
-
-                        //Optional, set background color based on winner
-                        // var backColor = dfrac > rfrac ? colorScale(5) : colorScale(-5);
-                        // //var backColor = colorScale((dfrac-rfrac)*100);
-                        // d3.selectAll('svg')
-                        // 	.style('background-color', backColor);
-                      }
-
-                      function update(yearData, year) {
-
-                        //Change D,R scores:
-                        updateScore(yearData);
-
-                        //Update title
-                        title.text(year);
-
-                        var circles = svg.selectAll("circle")
-                        .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
-
-                        circles.exit().remove();
-
-                        circles.enter().append("circle")
-                        .on("mouseover", tooltipOn) //Add tooltip before transition
-                        .on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
-                        .call(drag)
-                        .attr("class", "circle")
-                        .merge(circles)
-                        .transition()
-                        .duration(1000) //750;  1000
-                        .attr("cx", function(d) {
-                          return xScale(((d.num_dem-d.num_rep)/d.num_state)*100);
-                        })
-                        .attr("cy", function(d) {
-                          return yScale(d.turnout*100);
-                        })
-                        .attr("r", function(d) {
-                          return getRadioScaled(d);
-                        })
-                        .attr("fill",function(d){
-                          if (d.state.search(searchTerms) != -1) {
-                            return colorScale(((d.num_dem-d.num_rep)/d.num_state)*100);
-                          }else {
-                            return "rgba(192,192,192,0.05)";
-                          }
-                        });
-
-
-                      }
-
-                      function initialize(yearData, year) {
-
-                        //console.log(yearData);
-                        //console.log(year)
-
-                        //Change D,R scores:
-                        updateScore(yearData);
-
-                        //Update title
-                        title.text(year);
-
-                        var circles = svg.selectAll("circle")
-                        .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
-
-                        circles.exit().remove(); //.transition().duration(100);
-
-                        //Create any new circles
-                        circles.enter().append("circle")
-                        .attr("class", "circle")
-                        .attr("cx", function(d) {
-                          return xScale(((d.num_dem-d.num_rep)/d.num_state)*100);
-                        })
-                        .attr("cy", function(d) {
-                          return yScale(d.turnout*100);
-                        })
-                        .attr("r", function(d) {
-                          //return rScale(Math.sqrt(d.num_state/Math.PI));
-                          return getRadioScaled(d);
-                        })
-                        .attr("fill",function(d){
-                          if (d.state.search(searchTerms) != -1) {
-                            return colorScale(((d.num_dem-d.num_rep)/d.num_state)*100);
-                          }else {
-                            return "rgba(192,192,192,0.05)";
-                          }
-                        })
-                        .call(drag)
-                        .on("mouseover", tooltipOn)
-                        .on("mouseout", function(d){return tooltip.style("visibility", "hidden");});
-                      }
-
-
-                      //Initialize scatterplot
-                      initialize(yearData, year);
-                      //update(yearData, year);  //Works, but transition is weird.
-
-
-                    } //);
-                  }
-
-
-                  function renderDemographic(group) {
-
-                    if (cache.demographics) {
-                      build(cache.demographics);
-                    } else {
-                      d3.csv(urls.demographic, parseRows, function(error, data) {
-                        if (error) {throw error};
-                        //Update cache:
-                        cache.demographics = data;
-                        build(data);
-                      });
-                    }
-
-
-                    function tooltipOn(d) {
-                      tooltip.style("visibility", "visible")
-                      .html(
-                        "Group: " + capitalize(d.group) + "<br>" +
-                        " D: " + pctFormat(d.num_dem/d.num_group) +
-                        " R: " + pctFormat(d.num_rep/d.num_group) + "<br>" +
-                        "Turnout: " + pctFormat(d.turnout) + "<br>" +
-                        "Voters: " + thsdFormat(Math.round(d.num_group)) + "<br>")
-                      }
-
-
-                      function parseRows(d) {
-                        return {'group': d.group, 'id': d.group, 'num_group': +d.electorate_frac*+d.num_nation, 'turnout': +d.turnout,
-                        'num_rep': +d.rep_frac*+d.electorate_frac*+d.num_nation,
-                        'num_dem': +d.dem_frac*+d.electorate_frac*+d.num_nation, 'year': +d.year,
-                        'vap': +d.electorate_frac*+d.num_nation/+d.turnout, 'dem_margin': +d.dem_margin,
-                        'demographic':d.demographic};
-                      }
-
-
-                      function build(data){
-
-
-                        var nested = d3.nest()
-                        .key(function(d) { return d.demographic; })
-                        .key(function(d) { return +d.year; })
-                        .sortValues(function(a,b) { return b.num_group - a.num_group; } )  //Bring smallest to front
-                        .object(data);
-                        //.entries(data);
-
-                        //Select current demographic
-                        var dataset = nested[group];
-
-
-                        var years = Object.keys(dataset).map(Number);
-                        years.sort()
-                        year = year ? year : years[0];
-
-                        //Create a copy, so it can be edited on drag:
-                        var yearData = copyObj(dataset[String(year)]);
-
-                        //Data is just array of all objects from csv, used to find max of all years
-                        var rScale = d3.scaleLinear()
-                        .domain([0, d3.max(data, function(d) {return Math.sqrt(d.num_group/Math.PI); })])  //Area proportional to votes
-                        .range([1, 35]);  //2,60  2, 30
-
-                        function upclick() {
-                          year += 4;
-                          if (year > years[years.length - 1]) {
-                            year = years[0]
-                          }
-                          //Assign to new object, update circles:
-                          getYearData(dataset, year);
-                          //yearData = Object.assign([], getYearData(dataset, year));
-                          yearData = copyObj(dataset[String(year)]);
-                          update(yearData, year);
-                        }
-
-                        function downclick() {
-                          year -= 4;
-                          if (year < years[0]) {
-                            year = years[years.length - 1];
-                          }
-                          //Assign to new object, update:
-                          //yearData = Object.assign([], getYearData(dataset, year));
-                          //yearData = copyObj(getYearData(dataset, year));
-                          yearData = copyObj(dataset[String(year)]);
-                          update(yearData, year);
-                        }
-
-                        d3.select('#upclick').on("click", upclick);
-                        d3.select('#downclick').on("click", downclick);
-
-                        function getRadioScaled(d) {
-
-                          return rScale(Math.sqrt(d.num_group/Math.PI));
-
-                        }
-
-                        function updateAreas(event){
-
-                          d3.selectAll("circle").transition()
-                          .duration(1000) //750;
-                          .attr("r", function(d) {
-                            return getRadioScaled(d);
-                          });
-
-                        }
-
-                        d3.select("#areaform")
-                        .on("click", function () {
-                          return updateAreas();
-                        });
-
-
-                        //Dragging behavior
-                        //https://bl.ocks.org/mbostock/6123708
-                        var drag = d3.drag()
-                        .on("drag", dragged)
-                        .on("end", ended);
-
-
-                        function dragged(d) {
-                          //Remove transitions temporarily
-                          d3.selectAll("circle").transition();
-
-                          //Issue when dragged across 0 threshold, county_num = 0
-                          if (d3.event.y >= height) {
-                            return;
-                          }
-
-                          //Relocate circle with mouse
-                          d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-
-                          //Avoid case of no shift
-                          if (d.x === undefined || d.y === undefined) {
-                            return;
-                          }
-
-
-                          var newMargin = xScale.invert(d.x)/100,
-                          newTurnout = yScale.invert(d.y)/100,  //Math.abs()  d.y
-                          oldTurnout = d.turnout,
-                          oldMargin = (d.num_dem-d.num_rep)/d.num_group,
-                          marginChange = newMargin-oldMargin,
-                          oldDfrac = d.num_dem/d.num_group,
-                          oldRfrac = d.num_rep/d.num_group,
-                          oldNumDem = d.num_dem,
-                          oldNumRep = d.num_rep;
-
-                          //Recalculate fractions based on margin change
-                          //Half goes to each side, zero sum
-                          dfrac = oldDfrac + marginChange/2;
-                          rfrac = oldRfrac - marginChange/2;
-
-                          //Add increses in turnout to num_group
-                          d.num_group = newTurnout*d.vap;
-
-                          // Recalculate based on margin change first, assumes
-                          // margin changes are zero sum between parties.
-                          d.num_dem = dfrac*d.num_group;
-                          d.num_rep = rfrac*d.num_group;
-                          d.turnout =  newTurnout;
-
-                          //Call the tooltip function each time to update.
-                          tooltipOn(d);
-
-                          //Update score as well:
-                          updateScore(yearData);
-                        }
-
-                        function ended(d) {
-
-                          update(yearData, d.year);
-
-                        }
-
-                        function updateScore(yearData) {
-
-                          //Could get this data directly from dataframe,
-                          //but want to calculate so can be updated easily on drag.
-                          var sums = [0,0,0];
-                          var electoral_sums = [[],0,0];
-
-
-                          for (var i=0; i<yearData.length; i++) {
-                            // if (yearData[i].group != 'Other') {
-                            // 	console.log(yearData[i].group)
-                            sums[0] += yearData[i].num_dem;
-                            sums[1] += yearData[i].num_rep;
-                            sums[2] += yearData[i].num_group;
-                            //}
-                          }
-
-
-                          var dfrac = sums[0]/sums[2],
-                          rfrac = sums[1]/sums[2];
-
-                          //update dfrac rfrac text, update color background
-                          demtext.text('D ' + pctFormat(dfrac))
-                          reptext.text('R ' + pctFormat(rfrac))
-
-                        }
-
-                        function update(yearData, year) {
-
-                          //Change D,R scores:
-                          updateScore(yearData);
-
-                          //Update title
-                          title.text(year);
-
-                          var circles = svg.selectAll("circle")
-                          .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
-
-                          circles.exit().remove();
-
-                          circles.enter().append("circle")
-                          .on("mouseover", tooltipOn) //Add tooltip before transition
-                          .on("mouseout", function(d){return tooltip.style("visibility", "hidden");})
-                          .call(drag)
-                          .attr("class", "circle")
-                          .merge(circles)
-                          .transition()
-                          .duration(1000) //750;  1000
-                          .attr("cx", function(d) {
-                            return xScale(((d.num_dem-d.num_rep)/d.num_group)*100);
-                          })
-                          .attr("cy", function(d) {
-                            return yScale(d.turnout*100);
-                          })
-                          .attr("r", function(d) {
-                            return getRadioScaled(d);
-                          })
-                          .attr("fill",function(d){
-                            if (d.group.search(searchTerms) != -1) {
-                              return colorScale(((d.num_dem-d.num_rep)/d.num_group)*100);
-                            }else {
-                              return "rgba(192,192,192,0.05)";
-                            }
-                          });
-
-
-                        }
-
-                        function initialize(yearData, year) {
-
-                          //Change D,R scores:
-                          updateScore(yearData);
-
-                          //Update title
-                          title.text(year);
-
-                          var circles = svg.selectAll("circle")
-                          .data(yearData, function(d) { return d.id ; });  // Key for object constancy: https://bost.ocks.org/mike/constancy/
-
-                          circles.exit().remove(); //.transition().duration(100);
-
-                          //Create any new circles
-                          //var circles = svg.selectAll("circle")
-                          //	.data(yearData, function(d) { return d.state; })
-                          circles.enter().append("circle")
-                          .attr("class", "circle")
-                          .attr("cx", function(d) {
-                            return xScale(((d.num_dem-d.num_rep)/d.num_group)*100);
-                          })
-                          .attr("cy", function(d) {
-                            return yScale(d.turnout*100);
-                          })
-                          .attr("r", function(d) {
-                            //return rScale(Math.sqrt(d.num_state/Math.PI));
-                            return getRadioScaled(d);
-                          })
-                          // .attr("fill",function(d){
-                          // 	return colorScale(((d.num_dem-d.num_rep)/d.num_state)*100);
-                          // })
-                          .attr("fill",function(d){
-                            if (d.group.search(searchTerms) != -1) {
-                              return colorScale(((d.num_dem-d.num_rep)/d.num_group)*100);
-                            }else {
-                              return "rgba(192,192,192,0.05)";
-                            }
-                          })
-                          .call(drag)
-                          .on("mouseover", tooltipOn)
-                          .on("mouseout", function(d){return tooltip.style("visibility", "hidden");});
-                        }
-
-
-                        //Initialize scatterplot
-                        initialize(yearData, year);
-                        //update(yearData, year);  //Works, but transition is weird.
-
-
-                      } //);
-                    }
-
-
-
-                    renderCounties();
-
-
-
-
-
-
-                    </script>
-                  </main>
-                  <footer>
-                    <!-- <div class="footer-top">
-                    <div class="container">
-                    <div class="row">
-                    <div class="col-md-12 col-lg-6 footer_widget">
-                    <div class="inner">
-                    <h4>About</h4>
-                    <p>Each group must determine a cohesive theme for the project. This could be an overall story that each visualization will help tell, or a broad question that each visualization will help answer in different ways.</p>
-                  </div>
-                </div>
-                <div class="col-md-12 col-lg-6 footer_widget">
-                <div class="inner">
-                <h4>Credits</h4>
-                <ul>
-                <li><a href="https://www.themeum.com" target="_blank">Theme: Flat Theme</a></li>
-                <li><a href="https://getbootstrap.com/" target="_blank">Framework: Bootstrap</a></li>
-                <li><a href="https://www.freepik.com" target="_blank">Images: freepik</a></li>
-                <li><a href="https://unsplash.com/" target="_blank">Images: Unsplash</a></li>
-                <li><a href="https://fontawesome.com" target="_blank">Icon: FontAwesome</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+</script>
+  </main>
+  <footer>
     <div class="footer-bottom">
       <div class="container">
         <div class="row">
